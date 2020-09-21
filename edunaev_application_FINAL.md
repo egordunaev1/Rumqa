@@ -1,4 +1,4 @@
-# Дунаев Егор - веб-сервис "Rumqa"
+# Дунаев Егор - веб-сервис "Roomqa"
 
 ### Группа: 10 - И - 1
 ### Электронная почта: egordunaev1@mail.ru
@@ -7,7 +7,7 @@
 
 **[ НАЗВАНИЕ ПРОЕКТА ]**
 
-"Rumqa" ("Румка") - от Rooms of questions and answers
+"Roomqa" ("Румка") - от Rooms of questions and answers
 
 **[ ПРОБЛЕМНОЕ ПОЛЕ ]**
 
