@@ -1,0 +1,6 @@
+pip install django
+pip install django-allauth
+pip install django-bootstrap4
+pip install django-crispy-forms
+pip install djangorestframework
+pip install djangorestframework-jwt
