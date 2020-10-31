@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {getCookie} from '../../cookieOperations';
 
 function PEInput(props) {
   return (
@@ -41,7 +42,7 @@ class ProfileEdit extends Component {
     fetch('http://localhost:8000/profile_edit/', {
       method: 'PUT',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: formData
     })
@@ -74,7 +75,7 @@ class ProfileEdit extends Component {
     fetch('http://localhost:8000/update_friend_list/' + id, {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       }
     });
   }

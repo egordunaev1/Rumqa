@@ -107,12 +107,10 @@ def create_room(request):
     data = json.loads(request.body)
     # Если true, то редактируем существуюущую, а не создаем новую
     edit = data['edit']
-    print(1)
     members = data['members']  # Пользователи, которых добавили в комнату
     name = data['name']
     description = data['description']
     room = Room.objects.get(pk=data['room'])
-    print(2)
     # Проверка доступа
     if not (not edit and room.id == 18 or user in room.admin_list.all()):
         return Response(b'', status=status.HTTP_403_FORBIDDEN)
@@ -120,8 +118,10 @@ def create_room(request):
     if not edit:
         # Создание
         # Комната с таким названием уже есть в текущей комнате
-        if room.nested_rooms.filter(name=data['name']):
+        if room.nested_rooms.filter(name=name):
             return Response({'name': ['Комната с таким названием уже существует']}, status=status.HTTP_400_BAD_REQUEST)
+        if room.id == 18 and (name == 'profile' or name == 'chat'):
+            return Response({'name': ['Недопустимое имя комнаты']}, status=status.HTTP_400_BAD_REQUEST)
 
         # Поля будущей комнаты
         data = {
@@ -264,6 +264,7 @@ def upload_code(request):
 
     # Форматирование
     code = highlight(code, lexer, formatter)
+    print(formatter.get_style_defs())
     css = formatter.get_style_defs().replace('source ', '')
 
     # Ответ

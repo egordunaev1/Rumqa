@@ -5,10 +5,6 @@ import Error404 from './404';
 import Error500 from './500';
 
 class ErrorHandler extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     switch (this.props.error) {
       case 401:
@@ -19,6 +15,8 @@ class ErrorHandler extends Component {
         return <Error404 />;
       case 500:
         return <Error500 />;
+      default:
+        return '';
     };
   }
 }

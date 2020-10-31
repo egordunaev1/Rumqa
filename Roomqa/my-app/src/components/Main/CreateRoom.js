@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import {getCookie} from '../../cookieOperations';
 
 function Member(props) {
   return (
     <div className={"member mt-2 d-flex pt-2 px-2" + (props.current ? ' choosen' : '')}>
-      <img className="cover-img" alt="" src={"http://localhost:8000" + props.member.profile.cover} height="32px" width="32px" />
+      <img alt=""  className="cover-img" src={"http://localhost:8000" + props.member.profile.cover} height="32px" width="32px" />
       <span className="ml-3">{props.member.profile.first_name + ' ' + props.member.profile.last_name + ' (' + props.member.username + ')'}</span>
       <div className="member-choose-status">
         <button className={"btn-sm btn-" + (!props.current || props.current.status !== 'admin' ? 'secondary' : 'success')} onClick={(e) => { e.preventDefault(); props.addMember('admin', props.member) }}>Админ</button>
@@ -59,7 +60,7 @@ class CreateRoom extends Component {
     fetch('http://localhost:8000/search_friends/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({ search: data, room: this.props.room.id })
     })
@@ -129,7 +130,7 @@ class CreateRoom extends Component {
     fetch('http://localhost:8000/create_room/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
         edit: this.props.edit,
@@ -168,7 +169,7 @@ class CreateRoom extends Component {
       <div className="main-body body bg-white p-3">
         <form onSubmit={e => this.handleCreate(e)}>
           <div className="d-flex">
-            {this.props.need_return_btn ? <a href="#" onClick={(e) => { e.preventDefault(); return this.props.switchActiveTab(0, 1); }} className="p-a">Назад</a> : ''}
+            {this.props.need_return_btn ? <a href="" onClick={(e) => { e.preventDefault(); return this.props.switchActiveTab(0, 1); }} className="p-a">Назад</a> : ''}
             <h4 className="mx-auto text-primary">{this.props.edit ? 'Редактирование' : 'Создание комнаты'}</h4>
           </div>
           <div>

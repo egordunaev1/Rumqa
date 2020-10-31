@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { getCookie } from '../../cookieOperations';
 import CreateMessage from './CreateMessage';
-import { Redirect } from 'react-router-dom';
 
 class CreateAnswer extends Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class CreateAnswer extends Component {
     fetch(this.backend + '/send_message/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
         room: this.props.room.id,

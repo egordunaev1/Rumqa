@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { getCookie } from '../../cookieOperations';
 import CreateMessage from './CreateMessage';
-import { Redirect } from 'react-router-dom';
 
 class CreateQuestion extends Component {
   constructor(props) {
@@ -47,7 +47,7 @@ class CreateQuestion extends Component {
     fetch(this.backend + '/send_message/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
         room: this.props.room.id,
@@ -75,7 +75,7 @@ class CreateQuestion extends Component {
     return (
       <div className="body main-body bg-white p-1 d-flex flex-column">
         <div className="d-flex">
-          <a href="#" onClick={(e) => { e.preventDefault(); return this.props.switchActiveTab(0, 2); }} className="p-a">Назад</a>
+          <a href=' ' onClick={(e) => { e.preventDefault(); return this.props.switchActiveTab(0, 2); }} className="p-a">Назад</a>
           <h4 className="text-primary mx-auto">Создание вопроса</h4>
         </div>
         <label htmlFor="title" className="ml-1">Заголовок</label>

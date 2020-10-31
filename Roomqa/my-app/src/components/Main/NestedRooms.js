@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import CreateRoom from './CreateRoom';
 import { Link } from 'react-router-dom';
+import {getCookie} from '../../cookieOperations';
 
 function is_admin(user, admin_list) {
   if (!user)
@@ -63,7 +63,7 @@ class NestedRooms extends Component {
   }
 
   getNestedRooms = () => {
-    var headers = (localStorage.getItem('token') ? { Authorization: `JWT ${localStorage.getItem('token')}` } : {});
+    var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
     fetch('http://localhost:8000/nested_rooms/' + this.props.room.id, {
       method: 'GET',
       headers: headers

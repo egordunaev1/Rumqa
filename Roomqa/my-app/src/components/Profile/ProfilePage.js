@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {getCookie} from '../../cookieOperations';
 
 function PRow(props) {
   return (
@@ -10,6 +11,7 @@ function PRow(props) {
 }
 
 function AddFriendButton(props) {
+  var disabled = (props.is_loading ? ' disabled' : '');
   switch (props.rel) {
     case 'none':
       return (
@@ -19,29 +21,29 @@ function AddFriendButton(props) {
       return (
         <div>
           <div className="sep" />
-          <button className={'btn mt-1 btn-danger'} onClick={() => props.update_friend_list({ request: 'remove' })}>Удалить из друзей</button>
+          <button className={'btn mt-1 btn-danger' + disabled} onClick={() => props.update_friend_list({ request: 'remove' })}>Удалить из друзей</button>
         </div>
       );
     case 'friend_inc':
       return (
         <div>
           <div className="sep" />
-          <button className={'btn mt-1 btn-success'} onClick={() => props.update_friend_list({ request: 'accept' })}>Принять предложение</button>
-          <button className={'btn mt-1 btn-danger ml-1'} onClick={() => props.update_friend_list({ request: 'deny' })}>Отклонить</button>
+          <button className={'btn mt-1 btn-success' + disabled} onClick={() => props.update_friend_list({ request: 'accept' })}>Принять предложение</button>
+          <button className={'btn mt-1 btn-danger ml-1' + disabled} onClick={() => props.update_friend_list({ request: 'deny' })}>Отклонить</button>
         </div>
       )
     case 'friend_out':
       return (
         <div>
           <div className="sep" />
-          <button className={'btn mt-1 btn-primary'} disabled>Предложение отправлено</button>
+          <button className={'btn mt-1 btn-primary' + disabled} disabled>Предложение отправлено</button>
         </div>
       )
     case 'stranger':
       return (
         <div>
           <div className="sep" />
-          <button className={'btn mt-1 btn-primary'} onClick={() => props.update_friend_list({})}>Добавить в друзья</button>
+          <button className={'btn mt-1 btn-primary' + disabled} onClick={() => props.update_friend_list({})}>Добавить в друзья</button>
         </div>
       )
     default:
@@ -52,18 +54,24 @@ function AddFriendButton(props) {
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      is_loading: false
+    };
     this.update_friend_list = this.update_friend_list.bind(this);
   }
 
   update_friend_list(data) {
+    this.setState({is_loading: true});
     fetch('http://localhost:8000/update_friend_list/' + this.props.owner.id + '/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({ data })
-    }).then(this.props.getUser(true));
+    }).then(() => {
+      this.props.getUser(true);
+      this.setState({is_loading: false});
+    });
   }
 
   render() {
@@ -71,7 +79,7 @@ class ProfilePage extends Component {
       <div className="pcontent">
         <div>
           <div className="media">
-            <img src={"http://localhost:8000" + this.props.owner.profile.cover} alt="" className="mr-3 rounded" width="65px" height="65px" />
+            <img alt=""  src={"http://localhost:8000" + this.props.owner.profile.cover} className="mr-3 rounded" width="65px" height="65px" />
             <div className="media-body">
               <h5 className="mt-0 text-primary owner-select-none">{this.props.owner.profile.first_name + ' ' + this.props.owner.profile.last_name + ' (' + this.props.owner.username + ')'}</h5>
                 Зарегистрирован: {this.props.owner.profile.reg_date.substring(0, 10)}
@@ -91,7 +99,7 @@ class ProfilePage extends Component {
               <dt className={'pvalue text-' + (this.props.owner.profile.reputation < 0 ? 'danger' : 'success')}>{this.props.owner.profile.reputation}</dt>
             </div>
           </div>
-          <AddFriendButton rel={this.props.owner.rel} update_friend_list={this.update_friend_list} />
+          <AddFriendButton rel={this.props.owner.rel} is_loading={this.state.is_loading} update_friend_list={this.update_friend_list} />
         </div >
       </div >
     )

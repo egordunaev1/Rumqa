@@ -8,6 +8,7 @@ import CreateRoom from './CreateRoom';
 import Chat from './Chat';
 import Members from './Members';
 import CreateQuestion from './CreateQuestion';
+import {getCookie} from '../../cookieOperations';
 
 class Main extends Component {
   constructor(props) {
@@ -23,8 +24,8 @@ class Main extends Component {
   getRoom = (not_loading = false) => {
     this.setState({ is_loading: !not_loading });
     let headers = {}
-    if (localStorage.getItem('token')) {
-      headers = { Authorization: `JWT ${localStorage.getItem('token')}` };
+    if (getCookie('token')) {
+      headers = { Authorization: `JWT ${getCookie('token')}` };
     }
     fetch('http://localhost:8000/room_data' + this.props.location.pathname, {
       headers: headers,
@@ -62,7 +63,9 @@ class Main extends Component {
         return <Chat setState={data => this.setState(data)} user={this.props.user} room={this.state.room} setError={this.setError} getRoom={this.getRoom} location={this.props.location} />
       case 4:
         return <Members getRoom={this.getRoom} is_admin={is_admin} room={this.state.room} username={this.props.user ? this.props.user.username : null} />
-    }
+      default:
+        return '';
+      }
   }
 
   componentDidMount() {
@@ -85,7 +88,6 @@ class Main extends Component {
     else if (this.state.room.path !== local_path) {
       this.getRoom();
     }
-
   }
 
   setError = (err_code) => {
@@ -99,7 +101,6 @@ class Main extends Component {
         if (element.username === this.props.user.username)
           is_admin = true;
       });
-
     return (
       <div>
         <div className="body main-body">

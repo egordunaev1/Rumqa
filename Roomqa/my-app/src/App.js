@@ -10,6 +10,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { getCookie, deleteCookie, setCookie } from './cookieOperations';
 
 
 class App extends Component {
@@ -31,16 +32,16 @@ class App extends Component {
   }
 
   updateUserData() {
-    let logged_in = localStorage.getItem('token') ? true : false;
+    let logged_in = getCookie('token') ? true : false;
     if (this.state.logged_in || logged_in) {
       fetch(this.backend + '/current-user/', {
         headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
+          Authorization: `JWT ${getCookie('token')}`
         }
       })
         .then(response => {
           if (response.status !== 200) {
-            localStorage.removeItem('token');
+            deleteCookie('token');
             this.setState({ logged_in: false, user: null});
           }
           else {
@@ -69,18 +70,17 @@ class App extends Component {
       body: JSON.stringify(data)
     })
       .then(res => res.json())
-      .then(json => localStorage.setItem('token', json.token))
+      .then(json => {setCookie('token', json.token, {'max-age': 2592000, 'samesite': 'Lax'}); console.log(json.token);})
       .then(() => this.updateUserData());
   };
 
   handle_logout = () => {
-    localStorage.removeItem('token');
+    deleteCookie('token');
     this.setState({ logged_in: false, user: null });
   };
 
 
   render() {
-    console.log(this.state.user);
     return (
       <Router>
         <div className="App">

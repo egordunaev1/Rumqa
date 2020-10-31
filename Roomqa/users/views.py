@@ -314,9 +314,34 @@ def update_friend_list(request, id):
 # Создание пользователя
 @api_view(['POST'])
 def create_user(request):
-    serializer = UserSerializerWithToken(data=request.data)
-    if serializer.is_valid():
+    data = request.data
+    username = data.get('username', '')
+    password = data.get('password', '')
+    repeat_password = data.get('repeat_password', '')
+
+    errors = {'username': '', 'password': ''}
+    if User.objects.filter(username=data['username']).exists():
+        errors['username'] = 'Логин уже существует'
+    elif len(username) < 8 or len(username) > 32:
+        errors['username'] = 'Логин должен быть от 8 до 32 символов'
+    elif len(re.match(r'[A-Za-z0-9._-]+', username).group(0)) != len(username):
+        errors['username'] = 'Логин должен содержать символы латинского алфавита, цифры или символы ".", "_", "-"'
+
+    if password == '':
+        errors['password'] = 'Введите пароль'
+    elif repeat_password == '':
+        errors['password'] = 'Повторите пароль'
+    elif repeat_password != password:
+        errors['password'] = 'Пароли не совпадают'
+    elif len(password) < 8 or len(password) > 32:
+        errors['password'] = 'Пароль должен быть не короче 8 символов'
+    elif len(re.match(r'[A-Za-z0-9._-]+', password).group(0)) != len(password):
+        errors['password'] = 'Пароль должен содержать символы латинского алфавита, цифры или знаки ".", "_", "-"'
+
+    serializer = UserSerializerWithToken(data=data)
+    print(123)
+    if not errors['username'] and not errors['password'] and serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     print(serializer.errors)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(errors, status=status.HTTP_400_BAD_REQUEST)

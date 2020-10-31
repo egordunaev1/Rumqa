@@ -8,6 +8,7 @@ import {
   Link,
   Route
 } from "react-router-dom";
+import {getCookie} from '../../cookieOperations';
 
 
 class Profile extends Component {
@@ -53,8 +54,8 @@ class Profile extends Component {
     if (id) {
       this.setState({ is_loading: !not_loading, id: id });
       let headers = {}
-      if (localStorage.getItem('token')) {
-        headers = { Authorization: `JWT ${localStorage.getItem('token')}` };
+      if (getCookie('token')) {
+        headers = { Authorization: `JWT ${getCookie('token')}` };
       }
       fetch('http://localhost:8000/user_data/' + id, {
         headers: headers,

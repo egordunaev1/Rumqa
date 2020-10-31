@@ -1,6 +1,6 @@
 import React, { Component, createRef } from 'react';
 import BrowseMessages from './BrowseMessages';
-import Interweave from 'interweave';
+import { getCookie } from '../../cookieOperations';
 import Scrollbar from 'react-scrollbars-custom';
 import CreateMessage from './CreateMessage';
 
@@ -20,6 +20,7 @@ class Chat extends Component {
     this.backend = 'http://localhost:8000';
     this.frontend = 'http://localhost:3000';
     this.state = {
+      ws: null,
       nm_height: 140,
       height: 0,
       messages: [],
@@ -36,6 +37,8 @@ class Chat extends Component {
   scrollbar = React.createRef();
   new_message = React.createRef();
 
+  timeout = 250;
+
   get_nm_height = () => Math.min(this.new_message.current.scrollHeight, this.state.height - 181 - 50 - 100);
 
   componentDidUpdate(a, b, c) {
@@ -43,13 +46,61 @@ class Chat extends Component {
       this.setState({ nm_height: this.get_nm_height() });
   }
 
+  connect = () => {
+    var ws = new WebSocket("ws://localhost:8000/ws/room_chat/" + this.props.room.id + '/');
+    let that = this; // cache the this
+    var connectInterval;
+
+    // websocket onopen event listener
+    ws.onopen = () => {
+      console.log("connected websocket main component");
+
+      this.setState({ ws: ws });
+
+      that.timeout = 250; // reset timer to 250 on open of websocket connection 
+      clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+    };
+
+    // websocket onclose event listener
+    ws.onclose = e => {
+      console.log(
+        `Socket is closed. Reconnect will be attempted in ${Math.min(
+          10000 / 1000,
+          (that.timeout + that.timeout) / 1000
+        )} second.`,
+        e.reason
+      );
+
+      that.timeout = that.timeout + that.timeout; //increment retry interval
+      connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
+    };
+
+    // websocket onerror event listener
+    ws.onerror = err => {
+      console.error(
+        "Socket encountered error: ",
+        err.message,
+        "Closing socket"
+      );
+
+      ws.close();
+    };
+  };
+
+  check = () => {
+    const { ws } = this.state;
+    if (!ws || ws.readyState == WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
+  };
+
   componentDidMount() {
     this.getMessages();
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
+    this.connect();
     if (this.new_message.current)
       this.new_message.current.addEventListener('resize', this.update_nm_height);
   }
+
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
@@ -63,7 +114,7 @@ class Chat extends Component {
     fetch(this.backend + '/send_message/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
         room: this.props.room.id,
@@ -90,7 +141,8 @@ class Chat extends Component {
   }
 
   getMessages = () => {
-    var headers = (localStorage.getItem('token') ? { Authorization: `JWT ${localStorage.getItem('token')}` } : {});
+    var token = getCookie('token');
+    var headers = (token ? { Authorization: `JWT ${token}` } : {});
     if (this.state.mm)
       fetch(this.backend + '/more_messages/', {
         method: 'POST',
@@ -141,7 +193,7 @@ class Chat extends Component {
           </Scrollbar>
           <Scrollbar style={{ height: strh, width: '100%', borderTop: '2px solid #cdd1d5' }}>
             <div className="new-message mt-auto container-fluid p-2" ref={this.new_message}>
-              <CreateMessage setStruct={(struct) => this.setState({ struct: struct })} struct={this.state.struct} backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} />
+              {this.props.user ? <CreateMessage setStruct={(struct) => this.setState({ struct: struct })} struct={this.state.struct} backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} /> : ''}
             </div>
           </Scrollbar>
         </div>

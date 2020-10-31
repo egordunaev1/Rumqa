@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-  Link,
-  Redirect
+  Link
 } from "react-router-dom";
 
 class LoginForm extends React.Component {

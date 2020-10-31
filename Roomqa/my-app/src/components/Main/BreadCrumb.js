@@ -23,7 +23,7 @@ function BreadCrumb(props) {
         props.can_edit && (
           props.active_tab > 4 ?
           <div className="ml-auto my-auto mr-2">
-            <a href="#" onClick={(e) => {e.preventDefault(); return props.switchActiveTab(0, 1);}}>Назад</a>
+            <a href=" " onClick={(e) => {e.preventDefault(); return props.switchActiveTab(0, 1);}}>Назад</a>
           </div>
           :
           <div className="ml-auto my-auto mr-1">

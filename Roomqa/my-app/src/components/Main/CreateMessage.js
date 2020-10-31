@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import Interweave from 'interweave';
+import {getCookie} from '../../cookieOperations';
 
 function ChooseBlock(props) {
   const cur = props.current_block;
   return (
     <div>
       <div className="d-flex">
-        <img src={props.backend + "/media/images/icons/textblock.png"} width="30px" height="30px" className={"cursor-pointer " + (cur === 'text' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'text')} />
-        <img src="http://xn----7sb9ahdajscmg.xn--p1ai/images/35.png" width="30px" height="30px" className={"imageblockicon cursor-pointer " + (cur === 'image' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'image')} />
-        <img src={props.backend + '/media/images/icons/codeblock.png'} width="30px" height="30px" className={"cursor-pointer " + (cur === 'code' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'code')} />
+        <img alt="" src={props.backend + "/media/images/icons/textblock.png"} width="30px" height="30px" className={"cursor-pointer " + (cur === 'text' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'text')} />
+        <img alt="" src="http://xn----7sb9ahdajscmg.xn--p1ai/images/35.png" width="30px" height="30px" className={"imageblockicon cursor-pointer " + (cur === 'image' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'image')} />
+        <img alt="" src={props.backend + '/media/images/icons/codeblock.png'} width="30px" height="30px" className={"cursor-pointer " + (cur === 'code' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'code')} />
       </div>
       {props.ind !== 0 ?
         <div className="d-flex mt-1">
@@ -16,7 +17,7 @@ function ChooseBlock(props) {
         </div>
         :
         <div className="d-flex mt-1">
-          <img src={props.backend + "/media/images/icons/send.png"} width="30px" className="cursor-pointer" onClick={() => props.sendMessage()} />
+          <img alt="" src={props.backend + "/media/images/icons/send.png"} width="30px" className="cursor-pointer" onClick={() => props.sendMessage()} />
         </div>
       }
     </div>
@@ -26,7 +27,7 @@ function ChooseBlock(props) {
 function AddBlock(props) {
   return (
     <div className="container-fluid my-2 addblock d-flex">
-      <img src={props.backend + "/media/images/icons/add.png"} height="30px" onClick={() => props.addBlock(props.ind)} className="cursor-pointer mx-auto" />
+      <img alt="" src={props.backend + "/media/images/icons/add.png"} height="30px" onClick={() => props.addBlock(props.ind)} className="cursor-pointer mx-auto" />
     </div>
   )
 }
@@ -35,14 +36,10 @@ function textarea_resize(event, line_height, min_line_count) {
   var min_line_height = min_line_count * line_height;
   var obj = event.target;
   var obj_height = line_height * (obj.value.split('\n').length);
-  obj.style.height = "calc(" + Math.max(min_line_height, obj_height) + 'px' + ' + .50rem)';
+  obj.style.height = "calc(" + Math.max(min_line_height, obj_height) + 'px + .50rem)';
 }
 
 class CodeBlock extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   code = React.createRef();
   style = React.createRef();
   lang = React.createRef();
@@ -220,9 +217,9 @@ function ImageBlock(props) {
             </div>
           </div>
           {props.value.map((image, ind) => (
-            <div key={ind+'d1'} className="mt-2 ml-1" style={{ display: 'inline-block' }}>
-              <img key={ind+'i1'} src={image} key={ind} className="image-block-img" />
-              <img key={ind+'i2'} src={props.backend + '/media/images/icons/close.png'} height="10px" width="10px" key={ind + 'a'} className="image-delete" onClick={() => props.deleteImage(props.ind, ind)} />
+            <div key={ind + 'd1'} className="mt-2 ml-1" style={{ display: 'inline-block' }}>
+              <img alt="" key={ind + 'i1'} src={image} className="image-block-img" />
+              <img alt="" key={ind + 'i2'} src={props.backend + '/media/images/icons/close.png'} height="10px" width="10px" className="image-delete" onClick={() => props.deleteImage(props.ind, ind)} />
             </div>
           ))}
         </form>
@@ -233,10 +230,6 @@ function ImageBlock(props) {
 }
 
 class TextBlock extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   divarea = React.createRef();
 
   render() {
@@ -263,12 +256,12 @@ class CreateMessage extends Component {
     const code = _code.value;
     const style = _style.value;
     const lang = _lang.value;
-    const id = (new Date).toISOString().replace(/[:.-]/g, () => '');
+    const id = (new Date()).toISOString().replace(/[:.-]/g, () => '');
 
     fetch(this.backend + '/upload_code/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
         ind: id,
@@ -300,6 +293,8 @@ class CreateMessage extends Component {
       case 'code':
         struct[ind].value = { code: '', css: '' };
         break;
+      default:
+        return '';
     }
     this.props.setStruct(struct);;
   }
@@ -321,7 +316,7 @@ class CreateMessage extends Component {
     fetch(this.backend + '/upload_image/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: formData
     })
@@ -376,6 +371,8 @@ class CreateMessage extends Component {
             return <ImageBlock backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} deleteBlock={this.deleteBlock} key={ind} value={block.value} ind={ind} submitImage={this.submitImage} handleChangeType={this.handleChangeType} deleteImage={this.deleteImage} addBlock={this.addBlock} />
           case 'code':
             return <CodeBlock backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} getCode={this.getCode} deleteBlock={this.deleteBlock} key={ind} value={block.value} ind={ind} submitImage={this.submitImage} handleChangeType={this.handleChangeType} addBlock={this.addBlock} />
+          default:
+            return '';
         }
       }
       )

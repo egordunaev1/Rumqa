@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,9 +41,26 @@ INSTALLED_APPS = [
     'rooms',
     'users',
 ] + [
+    'rest_framework.authtoken',
     'rest_framework',
     'corsheaders',
+    'channels'
 ]
+
+# Channels
+
+ASGI_APPLICATION = 'mysite.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}
+ASGI_APPLICATION = 'Roomqa.asgi.application'
+
+# Middleware
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -151,3 +169,7 @@ CORS_ORIGIN_WHITELIST = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=14)
+}

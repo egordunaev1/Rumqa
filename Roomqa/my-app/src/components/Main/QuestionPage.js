@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Interweave from 'interweave';
 import CreateAnswer from './CreateAnswer';
+import {getCookie} from '../../cookieOperations';
 
 
 function BrowseText(props) {
@@ -43,7 +44,7 @@ function BrowseImage(props) {
     <div>
       {
         block.value.map((image, ind) => (
-          <img className="b-image cursor-pointer mt-1" src={image} key={ind} onClick={() => props.openImage(image)} />
+          <img alt=""  className="b-image cursor-pointer mt-1" src={image} key={ind} onClick={() => props.openImage(image)} />
         ))
       }
     </div>
@@ -71,7 +72,7 @@ function BrowseQuestion(props) {
       <div className="d-flex q-creator pt-2">
         <div className="ml-1 d-flex">
           <Link to={"/profile/" + creator.id}>
-            <img src={'http://localhost:8000' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
+            <img alt=""  src={'http://localhost:8000' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
             <span className="mt-1 ml-1 text-black">{creator.profile.first_name} {creator.profile.last_name}</span>
           </Link>
         </div>
@@ -101,15 +102,15 @@ function BrowseAnswer(props) {
       <div className="d-flex a-creator pt-2">
         <div className="ml-1 container-fluid p-0 d-flex">
           <Link to={"/profile/" + creator.id}>
-            <img src={'http://localhost:8000' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
+            <img alt=""  src={'http://localhost:8000' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
             <span className="mt-1 ml-1 text-black">{creator.profile.first_name} {creator.profile.last_name}</span>
           </Link>
           <div className="cursor-pointer ml-3" onClick={() => props.like(props.answer.id, '+')}>
-            <img src="http://localhost:8000/media/images/icons/like.png" height="16px" />
+            <img alt=""  src="http://localhost:8000/media/images/icons/like.png" height="16px" />
           </div>
           <div className={"mx-1 grading text-" + (likes < 0 ? 'danger' : 'success')}>{likes}</div>
           <div className="cursor-pointer mt-1" onClick={() => props.like(props.answer.id, '-')}>
-            <img src="http://localhost:8000/media/images/icons/dislike.png" height="16px" />
+            <img alt=""  src="http://localhost:8000/media/images/icons/dislike.png" height="16px" />
           </div>
           {
             iuqc && !dbe && !iuac &&
@@ -167,7 +168,7 @@ class Question extends Component {
     fetch('http://localhost:8000/like/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
         answer_id: id,
@@ -191,7 +192,7 @@ class Question extends Component {
   }
 
   getQuestion = (id) => {
-    var headers = (localStorage.getItem('token') ? { Authorization: `JWT ${localStorage.getItem('token')}` } : {});
+    var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
     fetch('http://localhost:8000/get_questions/' + this.props.room.id + '/' + id, {
       method: 'GET',
       headers: headers
@@ -206,7 +207,7 @@ class Question extends Component {
     fetch('http://localhost:8000/choose_best/', {
       method: 'POST',
       headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
+        Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
         answer_id: answer_id
@@ -238,14 +239,14 @@ class Question extends Component {
         <div className="p-1 bg-white" style={{ borderRadius: '5px 5px 0 0' }}>
           <Link to={this.props.location.pathname}>Назад</Link>
         </div>
-        <div className="bg-mes p-2"><h4 className="mb-0">{q.title}</h4></div>
+        <div className="bg-mes p-2"><h5 className="mb-0">{q.title}</h5></div>
         <BrowseQuestion user={this.props.user} openImage={this.openImage} question={q} />
         {
           q.answers.map((ans, ind) => (
             <BrowseAnswer like={this.like} key={ind} chooseBest={this.chooseBest} user={this.props.user} openImage={this.openImage} answer={ans} does_best_exists={q.best_answer && true} is_best={q.best_answer && q.best_answer === ans.id} is_user_q_creator={this.props.user && q.creator.id === this.props.user.id} />
           ))
         }
-        <CreateAnswer setState={data => this.setState(data)} question={q} room={this.props.room} user={this.props.user} setError={this.props.setError} switchActiveTab={this.props.switchActiveTab} />
+        {this.props.user ? <CreateAnswer setState={data => this.setState(data)} question={q} room={this.props.room} user={this.props.user} setError={this.props.setError} switchActiveTab={this.props.switchActiveTab} /> : ''}
       </div>
     )
   }
@@ -289,7 +290,7 @@ class QuestionPage extends Component {
 
   getQuestions = (page = this.state.page) => {
     this.setState({ is_loading: true });
-    var headers = (localStorage.getItem('token') ? { Authorization: `JWT ${localStorage.getItem('token')}` } : {});
+    var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
     fetch('http://localhost:8000/get_questions/many/' + this.props.room.id + '/' + page, {
       method: 'GET',
       headers: headers
@@ -336,8 +337,8 @@ class QuestionPage extends Component {
               ))
             }
             <div className="container-fluid d-flex p-0">
-              <button className="btn btn-success m-1" onClick={() => this.props.switchActiveTab(0, 7)}>Создать вопрос</button>
-              <nav aria-label="Page navigation example" className="ml-auto my-auto">
+              <button className="btn btn-success m-1" onClick={() => this.props.switchActiveTab(0, 7)} disabled={!this.props.user}>Создать вопрос</button>
+              <nav aria-label="Page navigation example" className="ml-auto my-1">
                 <ul className="pagination my-auto mr-1">
                   <li className="page-item"><a className="page-link" href="" onClick={(e) => { var page = 1; this.setState({ page: page }); this.getQuestions(page); e.preventDefault(); }}>First</a></li>
                   {left.map((p, ind) => (

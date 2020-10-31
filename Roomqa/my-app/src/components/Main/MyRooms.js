@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import CreateRoom from './CreateRoom';
 import Wrapper from './Wrapper';
+import {getCookie} from '../../cookieOperations';
 
 function MRTopPanel(props) {
   return (
@@ -38,7 +39,7 @@ function Room(props) {
       </Link>
       {
         room.nested_rooms.map((room1, ind) => (
-          <div>
+          <div key={ind + 0}>
             <Link to={room1.path}>
               <div key={ind + 1} className="row nested_room no-gutters p-1">
                 <div key={ind + 2} className="col-3 nested_room_name">&#11177;{room1.name}</div>
@@ -48,7 +49,7 @@ function Room(props) {
             </Link>
             {
               room1.nested_rooms.map((room2, ind) => (
-                <div>
+                <div key={ind + 9}>
                   <Link to={room2.path}>
                     <div key={ind + 5} className="row nested_room no-gutters p-1">
                       <div key={ind + 6} className="col-3 pl-3 nested_room_name">&#11177;{room2.name}</div>
@@ -84,7 +85,7 @@ class MyRooms extends Component {
 
   getMyRooms = () => {
     this.setState({ is_loading: true });
-    var headers = (localStorage.getItem('token') ? { Authorization: `JWT ${localStorage.getItem('token')}` } : {});
+    var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
     fetch('http://localhost:8000/my_rooms/', {
       method: 'GET',
       headers: headers
@@ -97,6 +98,10 @@ class MyRooms extends Component {
 
   render() {
     let rooms = this.state.my_rooms;
+    if (this.state.error == 401 && getCookie('token') && this.props.user) {
+      this.setState({error: null});
+      this.getMyRooms();
+    }
     if (this.state.active_tab === 1)
       return (
         <Wrapper is_loading={false} error={this.state.error}>
