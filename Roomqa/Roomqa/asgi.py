@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/
 """
 
 import os
+import django
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
@@ -16,6 +17,7 @@ import rooms.routing
 from .token_middleware import TokenAuthMiddlewareStack
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Roomqa.settings')
+django.setup()
 
 application = ProtocolTypeRouter({
   "http": get_asgi_application(),

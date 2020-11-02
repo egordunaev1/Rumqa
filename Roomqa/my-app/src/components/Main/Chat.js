@@ -75,6 +75,15 @@ class Chat extends Component {
       connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
     };
 
+    ws.onmessage = e => {
+      console.log(e);
+      const data = JSON.parse(e.data);
+      const message = data.message;
+      var mes = this.state.messages;
+      mes.push(message);
+      this.setState({ messages: mes });
+    };
+
     // websocket onerror event listener
     ws.onerror = err => {
       console.error(
@@ -111,33 +120,10 @@ class Chat extends Component {
   }
 
   sendMessage = () => {
-    fetch(this.backend + '/send_message/', {
-      method: 'POST',
-      headers: {
-        Authorization: `JWT ${getCookie('token')}`
-      },
-      body: JSON.stringify({
-        room: this.props.room.id,
-        struct: this.state.struct,
-        type: 'message'
-      })
-    }).then(res => {
-      if (res.status === 200) {
-        this.setState({ struct: [{ type: 'text', value: '' }] });
-        res.json().then(res => {
-          var mes = this.state.messages;
-          mes.push(res);
-          this.setState({ messages: mes });
-        });
-      } else {
-        if (res.status !== 400) {
-          if (res.status === 401)
-            alert('Необходима авторизация');
-          else
-            this.props.setError(res.status);
-        }
-      }
-    })
+    this.state.ws.send(JSON.stringify({
+      message: this.state.struct
+    }));
+    this.setState({ struct: [{ type: 'text', value: '' }] });
   }
 
   getMessages = () => {

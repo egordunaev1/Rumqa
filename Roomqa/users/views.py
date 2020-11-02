@@ -131,8 +131,6 @@ def search_friends(request):
                 data = list(reversed(sorted([friend.profile.first_name.upper(
                 ), friend.profile.last_name.upper(), friend.username.upper()])))
 
-                print(data, search)
-
                 for i in search:
                     for j in data:
                         if j and i and re.search(i, j):
@@ -276,7 +274,6 @@ def update_friend_list(request, id):
     if friend.profile in user.friends.all():
         if data.get('request', False):
             if data['request'] == 'remove':
-                print(data)
                 user.friends.remove(friend.profile)
                 friend.friends.remove(user.profile)
                 user.save()
@@ -339,9 +336,7 @@ def create_user(request):
         errors['password'] = 'Пароль должен содержать символы латинского алфавита, цифры или знаки ".", "_", "-"'
 
     serializer = UserSerializerWithToken(data=data)
-    print(123)
     if not errors['username'] and not errors['password'] and serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)
     return Response(errors, status=status.HTTP_400_BAD_REQUEST)

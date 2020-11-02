@@ -42,7 +42,6 @@ def room_data(request):
         path.remove('')
     if path == ['']:
         return Response(b'', status=status.HTTP_404_NOT_FOUND)
-    print(1)
     # Поиск комнаты по пути до нее
     room = Room.objects.get(pk=18)
     for i in path:
@@ -54,17 +53,13 @@ def room_data(request):
                 return Response(b'', status=status.HTTP_403_FORBIDDEN)
         except:
             return Response(b'', status=status.HTTP_404_NOT_FOUND)
-    print(45)
     # Сборка ответа
     r = RoomSerializer(room).data
-    print(1)
     r['allowed_users'] = StrangerSerializer(room.allowed_users.order_by(
         'profile__last_name', 'profile__first_name'), many=True).data
-    print(2)
     r['admin_list'] = StrangerSerializer(room.admin_list.order_by(
         'profile__last_name', 'profile__first_name'), many=True).data
     r['questions'] = room.question_page.questions.count()
-    print(5)
     return Response(r, status=status.HTTP_200_OK)
 
 
@@ -134,7 +129,6 @@ def create_room(request):
         serializer = CreateRoomSerializer(data=data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        print(5)
         # Создание комнаты
         new_room = Room(**data)
         new_room.nested_in = room
@@ -182,7 +176,6 @@ def create_room(request):
         cur = room
         while cur.id != 18:
             for i in members:
-                print(i)
                 member = user.profile.friends.get(username=i['username'])
                 if i['status'] == 'admin':
                     cur.admin_list.add(member)
@@ -264,7 +257,6 @@ def upload_code(request):
 
     # Форматирование
     code = highlight(code, lexer, formatter)
-    print(formatter.get_style_defs())
     css = formatter.get_style_defs().replace('source ', '')
 
     # Ответ

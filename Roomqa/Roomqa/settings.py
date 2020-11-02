@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,24 +42,23 @@ INSTALLED_APPS = [
     'rooms',
     'users',
 ] + [
-    'rest_framework.authtoken',
     'rest_framework',
     'corsheaders',
-    'channels'
 ]
 
 # Channels
 
-ASGI_APPLICATION = 'mysite.asgi.application'
+# mysite/settings.py
+# Channels
+ASGI_APPLICATION = 'Roomqa.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('redis', 6379)],
+            "hosts": [('127.0.0.1', 6379)],
         },
     },
 }
-ASGI_APPLICATION = 'Roomqa.asgi.application'
 
 # Middleware
 
