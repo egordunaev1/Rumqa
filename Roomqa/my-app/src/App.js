@@ -21,7 +21,7 @@ class App extends Component {
       user: null,
       profile_active_tab: 1
     };
-    this.backend = 'http://localhost:8000';
+    this.backend = 'http://194.58.102.76:8000';
     this.frontend = 'http://localhost:3000';
     this.updateUserData = this.updateUserData.bind(this);
     this.update_pat = this.update_pat.bind(this);

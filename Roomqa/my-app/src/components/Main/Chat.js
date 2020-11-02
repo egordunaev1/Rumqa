@@ -17,7 +17,7 @@ class Chat extends Component {
     this.code = {};
     this.style = {};
     this.lang = {};
-    this.backend = 'http://localhost:8000';
+    this.backend = 'http://194.58.102.76:8000';
     this.frontend = 'http://localhost:3000';
     this.state = {
       ws: null,
@@ -47,7 +47,7 @@ class Chat extends Component {
   }
 
   connect = () => {
-    var ws = new WebSocket("ws://localhost:8000/ws/room_chat/" + this.props.room.id + '/');
+    var ws = new WebSocket("ws://194.58.102.76:8000/ws/room_chat/" + this.props.room.id + '/');
     let that = this; // cache the this
     var connectInterval;
 

@@ -63,7 +63,7 @@ function ChooseType(props) {
 function BrowseMessage(props) {
   var message = JSON.parse(props.message.chat_message_body.content);
   var sender = props.message.sender;
-  var backend = 'http://localhost:8000';
+  var backend = 'http://194.58.102.76:8000';
   return (
     <div className={"message my-1 p-1" + (props.user && sender.username === props.user.username ? " ml-2" : " message-not-my ml-auto mr-2")}>
       <div className="d-flex mes-sender">

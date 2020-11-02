@@ -64,7 +64,7 @@ class NestedRooms extends Component {
 
   getNestedRooms = () => {
     var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
-    fetch('http://localhost:8000/nested_rooms/' + this.props.room.id, {
+    fetch('http://194.58.102.76:8000/nested_rooms/' + this.props.room.id, {
       method: 'GET',
       headers: headers
     })

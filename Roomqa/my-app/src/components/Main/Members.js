@@ -12,7 +12,7 @@ function BrowseMembers(props) {
           <div key={ind + 'd1'} className="col-12 col-md-6 px-3 my-1">
             <div key={ind + 'd2'} className="p-member p-2 text-white d-flex">
               <Link key={ind + 'l1'} to={"profile/" + member.id}>
-                <img alt=""  src={'http://localhost:8000' + member.profile.cover} className="cover-img" width="32px" height="32px" />
+                <img alt=""  src={'http://194.58.102.76:8000' + member.profile.cover} className="cover-img" width="32px" height="32px" />
                 <span className="ml-1">{member.profile.first_name} {member.profile.last_name} {'(' + member.username + ')'}</span>
               </Link>
               {
@@ -52,7 +52,7 @@ class Members extends Component {
   }
 
   change_status = (username, status) => {
-    fetch('http://localhost:8000/change_status/', {
+    fetch('http://194.58.102.76:8000/change_status/', {
       headers: { Authorization: `JWT ${getCookie('token')}` },
       method: 'POST',
       body: JSON.stringify({username: username, status: status, room: this.props.room.id})

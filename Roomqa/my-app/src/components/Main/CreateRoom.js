@@ -5,7 +5,7 @@ import {getCookie} from '../../cookieOperations';
 function Member(props) {
   return (
     <div className={"member mt-2 d-flex pt-2 px-2" + (props.current ? ' choosen' : '')}>
-      <img alt=""  className="cover-img" src={"http://localhost:8000" + props.member.profile.cover} height="32px" width="32px" />
+      <img alt=""  className="cover-img" src={"http://194.58.102.76:8000" + props.member.profile.cover} height="32px" width="32px" />
       <span className="ml-3">{props.member.profile.first_name + ' ' + props.member.profile.last_name + ' (' + props.member.username + ')'}</span>
       <div className="member-choose-status">
         <button className={"btn-sm btn-" + (!props.current || props.current.status !== 'admin' ? 'secondary' : 'success')} onClick={(e) => { e.preventDefault(); props.addMember('admin', props.member) }}>Админ</button>
@@ -57,7 +57,7 @@ class CreateRoom extends Component {
 
   getSearchResult = value => {
     let data = value;
-    fetch('http://localhost:8000/search_friends/', {
+    fetch('http://194.58.102.76:8000/search_friends/', {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
@@ -127,7 +127,7 @@ class CreateRoom extends Component {
 
   handleCreate = e => {
     e.preventDefault();
-    fetch('http://localhost:8000/create_room/', {
+    fetch('http://194.58.102.76:8000/create_room/', {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`

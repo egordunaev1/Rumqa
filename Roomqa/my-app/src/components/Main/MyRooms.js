@@ -86,7 +86,7 @@ class MyRooms extends Component {
   getMyRooms = () => {
     this.setState({ is_loading: true });
     var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
-    fetch('http://localhost:8000/my_rooms/', {
+    fetch('http://194.58.102.76:8000/my_rooms/', {
       method: 'GET',
       headers: headers
     }).then(res => {

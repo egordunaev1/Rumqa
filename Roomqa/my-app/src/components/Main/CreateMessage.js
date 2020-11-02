@@ -248,7 +248,7 @@ class TextBlock extends Component {
 class CreateMessage extends Component {
   constructor(props) {
     super(props);
-    this.backend = 'http://localhost:8000';
+    this.backend = 'http://194.58.102.76:8000';
     this.frontend = 'http://localhost:3000';
   }
 

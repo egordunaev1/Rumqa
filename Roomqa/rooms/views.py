@@ -103,7 +103,7 @@ def create_room(request):
     # Если true, то редактируем существуюущую, а не создаем новую
     edit = data['edit']
     members = data['members']  # Пользователи, которых добавили в комнату
-    name = data['name']
+    name = data['name'].replace('/', '')
     description = data['description']
     room = Room.objects.get(pk=data['room'])
     # Проверка доступа

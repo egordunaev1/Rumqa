@@ -25,7 +25,7 @@ class Reg extends React.Component {
 
   handle_signup = (e, data) => {
     e.preventDefault();
-    fetch('http://localhost:8000/create_user/', {
+    fetch('http://194.58.102.76:8000/create_user/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

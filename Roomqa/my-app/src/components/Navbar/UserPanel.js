@@ -54,11 +54,11 @@ class UserPanel extends React.Component {
         <div id="navbar-profile-panel" ref={this.wrapper}>
           <div onClick={this.handleProfileHidden} id="logged-in-nav-panel">
             <div className="my-auto" id="navbar-username">{this.props.user.username}</div>
-            <img alt=""  className="my-auto cover-img"  src={"http://localhost:8000" + this.props.user.profile.cover} height="32px" width="32px" />
+            <img alt=""  className="my-auto cover-img"  src={"http://194.58.102.76:8000" + this.props.user.profile.cover} height="32px" width="32px" />
           </div>
           <div className={this.state.hidden ? 'hidden' : ''} id="nav-profile">
             <Link to={'/profile/' + this.props.user.id} className="nav-profile-item" id="nav-profile-name" onClick={() => this.props.update_pat(1)}>
-              <img alt=""  className="my-auto cover-img"  src={"http://localhost:8000" + this.props.user.profile.cover} height="32px" width="32px" />
+              <img alt=""  className="my-auto cover-img"  src={"http://194.58.102.76:8000" + this.props.user.profile.cover} height="32px" width="32px" />
               <div className="">{this.props.user.profile.first_name + ' ' + this.props.user.profile.last_name}</div>
             </Link>
             <div className="nav-profile-sep mx-auto" />

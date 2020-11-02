@@ -27,7 +27,7 @@ class Main extends Component {
     if (getCookie('token')) {
       headers = { Authorization: `JWT ${getCookie('token')}` };
     }
-    fetch('http://localhost:8000/room_data' + this.props.location.pathname, {
+    fetch('http://194.58.102.76:8000/room_data' + this.props.location.pathname, {
       headers: headers,
       method: 'GET',
     }).then(res => {
