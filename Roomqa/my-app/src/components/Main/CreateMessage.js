@@ -249,7 +249,7 @@ class CreateMessage extends Component {
   constructor(props) {
     super(props);
     this.backend = 'http://194.58.102.76:8000';
-    this.frontend = 'http://localhost:3000';
+    this.frontend = 'http://194.58.102.76:3000';
   }
 
   getCode = (ind, _code, _style, _lang) => {

@@ -449,7 +449,8 @@ def more_messages(request):
     # Получение данных
     data = json.loads(request.body)
     room = Room.objects.get(pk=data['room'])
-    part = data['part'] - 1
+    last = data['last']
+    last_message = data['last_message']
 
     # Проверка доступа
     if room.id != 19 and not request.user:
@@ -457,9 +458,26 @@ def more_messages(request):
     if room.id != 19 and not request.user in room.admin_list.all() and not request.user in room.allowed_users.all():
         return Response(b'', status=status.HTTP_403_FORBIDDEN)
 
-    messages = reversed(list(reversed(ChatMessage.objects.filter(chat=room.chat)))[
-                        part*10: part*10 + 10])
-    return Response(ChatMessageSerializer(messages, many=True).data, status=status.HTTP_200_OK)
+    ind = 0
+    fnd = False
+    messages = ChatMessage.objects.filter(chat=room.chat)[:1000]
+    if last_message == -1:
+        messages = messages[:15]
+        fnd = True
+    else:
+        for mes in messages:
+            if mes.id == last_message:
+                if last:
+                    messages = messages[ind + 1: 10]
+                else:
+                    messages = messages[max(ind - 10, 0): ind - 1]
+                messages.reverse()
+                fnd = True
+                break
+            ind += 1
+    if fnd:
+        return Response(ChatMessageSerializer(messages, many=True).data, status=status.HTTP_200_OK)
+    return Response(b'', status=status.HTTP_404_NOT_FOUND)
 
 
 # Лайк ответа
