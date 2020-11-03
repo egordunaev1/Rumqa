@@ -64,7 +64,7 @@ class Chat extends Component {
     this.setState({ height: window.innerHeight });
   }
 
-  create = (type) => {
+  sendMessage = () => {
     fetch(this.backend + '/send_message/', {
       method: 'POST',
       headers: {
@@ -72,13 +72,17 @@ class Chat extends Component {
       },
       body: JSON.stringify({
         room: this.props.room.id,
-        type: type,
-        title: this.state.title,
-        struct: this.state.struct
+        struct: this.state.struct,
+        type: 'message'
       })
     }).then(res => {
       if (res.status === 200) {
-        this.props.switchActiveTab(0, 2);
+        this.setState({ struct: [{ type: 'text', value: '' }] });
+        res.json().then(res => {
+          var mes = this.state.messages;
+          mes.push(res);
+          this.setState({ messages: mes });
+        });
       } else {
         if (res.status !== 400) {
           if (res.status === 401)
@@ -86,8 +90,6 @@ class Chat extends Component {
           else
             this.props.setError(res.status);
         }
-        else
-          this.validator();
       }
     })
   }
@@ -157,7 +159,7 @@ class Chat extends Component {
           </Scrollbar>
           <Scrollbar style={{ height: strh, width: '100%', borderTop: '2px solid #cdd1d5' }}>
             <div className="new-message mt-auto container-fluid p-2" ref={this.new_message}>
-              {this.props.user ? <CreateMessage setStruct={(struct) => this.setState({ struct: struct })} struct={this.state.struct} backend={this.backend} frontend={this.frontend} sendMessage={this.create} /> : ''}
+              {this.props.user ? <CreateMessage setStruct={(struct) => this.setState({ struct: struct })} struct={this.state.struct} backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} /> : ''}
             </div>
           </Scrollbar>
         </div>
