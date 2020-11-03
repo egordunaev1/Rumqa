@@ -64,7 +64,7 @@ class Chat extends Component {
     this.setState({ height: window.innerHeight });
   }
 
-  sendMessage = () => {
+  create = (type) => {
     fetch(this.backend + '/send_message/', {
       method: 'POST',
       headers: {
@@ -157,7 +157,7 @@ class Chat extends Component {
           </Scrollbar>
           <Scrollbar style={{ height: strh, width: '100%', borderTop: '2px solid #cdd1d5' }}>
             <div className="new-message mt-auto container-fluid p-2" ref={this.new_message}>
-              {this.props.user ? <CreateMessage setStruct={(struct) => this.setState({ struct: struct })} struct={this.state.struct} backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} /> : ''}
+              {this.props.user ? <CreateMessage setStruct={(struct) => this.setState({ struct: struct })} struct={this.state.struct} backend={this.backend} frontend={this.frontend} sendMessage={this.create} /> : ''}
             </div>
           </Scrollbar>
         </div>
