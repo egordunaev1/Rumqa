@@ -319,7 +319,6 @@ def send_message(request):
             'chat': room.chat,
             'sender': user
         }
-
         cm = ChatMessage(**message_data)
         cm.save()
         resp = ChatMessageSerializer(cm).data
@@ -457,11 +456,10 @@ def more_messages(request):
         return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
     if room.id != 19 and not request.user in room.admin_list.all() and not request.user in room.allowed_users.all():
         return Response(b'', status=status.HTTP_403_FORBIDDEN)
-
     ind = 0
     fnd = False
-    messages = ChatMessage.objects.filter(chat=room.chat)[:1000]
-    if last_message == -1:
+    messages = ChatMessage.objects.filter(chat=room.chat).order_by('-pk')[:1000]
+    if last_message == -1 and last:
         messages = messages[:15]
         fnd = True
     else:
@@ -471,11 +469,11 @@ def more_messages(request):
                     messages = messages[ind + 1: 10]
                 else:
                     messages = messages[max(ind - 10, 0): ind - 1]
-                messages.reverse()
                 fnd = True
                 break
             ind += 1
     if fnd:
+        messages = list(reversed(list(messages)))
         return Response(ChatMessageSerializer(messages, many=True).data, status=status.HTTP_200_OK)
     return Response(b'', status=status.HTTP_404_NOT_FOUND)
 
