@@ -18,9 +18,8 @@ class Chat extends Component {
     this.style = {};
     this.lang = {};
     this.backend = 'http://194.58.102.76:8000';
-    this.frontend = 'http://localhost:3000';
+    this.frontend = 'http://194.58.102.76:3000';
     this.state = {
-      ws: null,
       nm_height: 140,
       height: 0,
       messages: [],
@@ -36,7 +35,7 @@ class Chat extends Component {
 
   scrollbar = React.createRef();
   new_message = React.createRef();
-
+  timerId;
   timeout = 250;
 
   get_nm_height = () => Math.min(this.new_message.current.scrollHeight, this.state.height - 181 - 50 - 100);
@@ -46,67 +45,12 @@ class Chat extends Component {
       this.setState({ nm_height: this.get_nm_height() });
   }
 
-  connect = () => {
-    var ws = new WebSocket("ws://194.58.102.76:8000/ws/room_chat/" + this.props.room.id + '/');
-    let that = this; // cache the this
-    var connectInterval;
-
-    // websocket onopen event listener
-    ws.onopen = () => {
-      console.log("connected websocket main component");
-
-      this.setState({ ws: ws });
-
-      that.timeout = 250; // reset timer to 250 on open of websocket connection 
-      clearTimeout(connectInterval); // clear Interval on on open of websocket connection
-    };
-
-    // websocket onclose event listener
-    ws.onclose = e => {
-      console.log(
-        `Socket is closed. Reconnect will be attempted in ${Math.min(
-          10000 / 1000,
-          (that.timeout + that.timeout) / 1000
-        )} second.`,
-        e.reason
-      );
-
-      that.timeout = that.timeout + that.timeout; //increment retry interval
-      connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
-    };
-
-    ws.onmessage = e => {
-      console.log(e);
-      const data = JSON.parse(e.data);
-      const message = data.message;
-      console.log(message);
-      var mes = this.state.messages;
-      mes.push(message);
-      this.setState({ messages: mes });
-    };
-
-    // websocket onerror event listener
-    ws.onerror = err => {
-      console.error(
-        "Socket encountered error: ",
-        err.message,
-        "Closing socket"
-      );
-
-      ws.close();
-    };
-  };
-
-  check = () => {
-    const { ws } = this.state;
-    if (!ws || ws.readyState == WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
-  };
 
   componentDidMount() {
     this.getMessages();
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-    this.connect();
+    this.timerId = setInterval(() => this.getMessages(false), 3000);
     if (this.new_message.current)
       this.new_message.current.addEventListener('resize', this.update_nm_height);
   }
@@ -127,7 +71,16 @@ class Chat extends Component {
     this.setState({ struct: [{ type: 'text', value: '' }] });
   }
 
-  getMessages = () => {
+  getMessages = (last = true) => {
+    var message;
+    if (this.state.messages.length == 0)
+      message = -1;
+    else {
+      if (last)
+        message = this.state.messages[this.state.messages.length - 1].id;
+      else
+        message = this.state.messages[0].id;
+    }
     var token = getCookie('token');
     var headers = (token ? { Authorization: `JWT ${token}` } : {});
     if (this.state.mm)
@@ -136,13 +89,16 @@ class Chat extends Component {
         headers: headers,
         body: JSON.stringify({
           room: this.props.room.id,
-          part: (this.state.messages.length / 10 | 0) + 1
+          last_message: message,
+          last: last
         })
       }).then(res => {
         if (res.status === 200)
           res.json().then(res => {
             let messages = this.state.messages;
-            messages = res.concat(messages);
+            if (last)
+              messages = res.concat(messages);
+            else messages = messages.concat(res);
             let mm = res.length && res.length % 10 === 0;
             this.setState({ messages: messages, mm: mm });
           });

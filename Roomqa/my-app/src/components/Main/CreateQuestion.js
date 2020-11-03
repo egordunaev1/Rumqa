@@ -9,7 +9,7 @@ class CreateQuestion extends Component {
     this.style = {};
     this.lang = {};
     this.backend = 'http://194.58.102.76:8000';
-    this.frontend = 'http://localhost:3000';
+    this.frontend = 'http://194.58.102.76:3000';
     this.state = {
       title: '',
       title_err: '',
