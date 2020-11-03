@@ -258,7 +258,7 @@ def upload_code(request):
     # Форматирование
     code = highlight(code, lexer, formatter)
     css = formatter.get_style_defs().replace('source ', '')
-
+    print(css)
     # Ответ
     return Response({
         'code': code,
@@ -466,9 +466,9 @@ def more_messages(request):
         for mes in messages:
             if mes.id == last_message:
                 if last:
-                    messages = messages[ind + 1: 10]
+                    messages = messages[ind + 1: ind + 10]
                 else:
-                    messages = messages[max(ind - 10, 0): ind - 1]
+                    messages = messages[max(ind - 10, 0):ind]
                 fnd = True
                 break
             ind += 1

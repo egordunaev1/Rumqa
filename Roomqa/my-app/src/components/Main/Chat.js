@@ -50,7 +50,8 @@ class Chat extends Component {
     this.getMessages();
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-    this.timerId = setInterval(() => this.getMessages(false), 3000);
+    this.timerId = setInterval(() => {this.getMessages(false);}, 3000);
+    console.log(this.timerId);
     if (this.new_message.current)
       this.new_message.current.addEventListener('resize', this.update_nm_height);
   }
@@ -99,14 +100,15 @@ class Chat extends Component {
     if (this.state.messages.length == 0)
       message = -1;
     else {
-      if (last)
+      if (!last)
         message = this.state.messages[this.state.messages.length - 1].id;
       else
         message = this.state.messages[0].id;
     }
     var token = getCookie('token');
     var headers = (token ? { Authorization: `JWT ${token}` } : {});
-    if (this.state.mm)
+    console.log(this.state.mm, 'mm', last);
+    if (this.state.mm || !last)
       fetch(this.backend + '/more_messages/', {
         method: 'POST',
         headers: headers,
@@ -122,7 +124,9 @@ class Chat extends Component {
             if (last)
               messages = res.concat(messages);
             else messages = messages.concat(res);
-            let mm = res.length && res.length % 10 === 0;
+            let mm = Boolean(res.length);
+	    if (!last)
+		mm = this.state.mm;
             this.setState({ messages: messages, mm: mm });
           });
         else {
