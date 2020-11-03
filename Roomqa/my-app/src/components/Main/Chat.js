@@ -79,6 +79,7 @@ class Chat extends Component {
       console.log(e);
       const data = JSON.parse(e.data);
       const message = data.message;
+      console.log(message);
       var mes = this.state.messages;
       mes.push(message);
       this.setState({ messages: mes });

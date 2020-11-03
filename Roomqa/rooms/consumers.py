@@ -1,4 +1,5 @@
 import json
+from django.conf import settings
 from django.contrib.auth.models import User
 from rooms.models import Chat, Room, ChatMessage, Message
 from rooms.serializers import ChatMessageSerializer
@@ -86,22 +87,23 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         message = save_message(self.user, self.chat, message)
-
         async_to_sync(self.channel_layer.group_send)(
             self.chat_group_name,
             {
-                'type': 'chat.message',
-                'message': message
+                "type": "chat.message",
+                "username": self.user.username,
+                "message": message,
             }
         )
 
     # Receive message from room group
     def chat_message(self, event):
-        message = event['message']
         print(self.user, self.channel_name)
         # prints 3 different users, три различных названия канала, три одинаковых названия группы
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
-            'message': message
+	    'msg_type': settings.MSG_TYPE_MESSAGE,
+	    'username': event['username'],
+            'message': event['message']
         }))
