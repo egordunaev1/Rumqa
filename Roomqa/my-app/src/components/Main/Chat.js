@@ -65,10 +65,31 @@ class Chat extends Component {
   }
 
   sendMessage = () => {
-    this.state.ws.send(JSON.stringify({
-      message: this.state.struct
-    }));
-    this.setState({ struct: [{ type: 'text', value: '' }] });
+    fetch(this.backend + '/send_message/', {
+      method: 'POST',
+      headers: {
+        Authorization: `JWT ${getCookie('token')}`
+      },
+      body: JSON.stringify({
+        room: this.props.room.id,
+        type: type,
+        title: this.state.title,
+        struct: this.state.struct
+      })
+    }).then(res => {
+      if (res.status === 200) {
+        this.props.switchActiveTab(0, 2);
+      } else {
+        if (res.status !== 400) {
+          if (res.status === 401)
+            alert('Необходима авторизация');
+          else
+            this.props.setError(res.status);
+        }
+        else
+          this.validator();
+      }
+    })
   }
 
   getMessages = (last = true) => {
