@@ -63,6 +63,7 @@ class UserPanel extends React.Component {
               <div className="">{this.props.user.profile.first_name + ' ' + this.props.user.profile.last_name}</div>
             </Link>
             <div className="nav-profile-sep mx-auto" />
+            <Link to={'/'} className="nav-profile-item">Мои комнаты</Link>
             <Link to={'/profile/' + this.props.user.id + '/friends'} className="nav-profile-item" onClick={() => this.props.update_pat(2)}>Друзья</Link>
             <Link to={'/profile/' + this.props.user.id + '/edit'} className="nav-profile-item" onClick={() => this.props.update_pat(3)}>Редактировать</Link>
             <div className="nav-profile-sep mx-auto" />

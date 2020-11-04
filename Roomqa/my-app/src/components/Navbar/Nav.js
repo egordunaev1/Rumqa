@@ -60,7 +60,7 @@ class Navbar extends React.Component {
                 <Link to="/Main" className="navbar-brand">Roomqa</Link>
                 {
                     this.props.logged_in ?
-                        <div className="" id="nav-search">
+                        <div className="" id="nav-my-rooms">
                             <Link className="nav-link text-white" to="/">Мои комнаты</Link>
                         </div>
                         :

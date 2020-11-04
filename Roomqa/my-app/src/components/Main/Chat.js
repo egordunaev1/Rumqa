@@ -58,6 +58,7 @@ class Chat extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
+    clearInterval(this.timerId);
   }
 
   updateWindowDimensions = () => {
