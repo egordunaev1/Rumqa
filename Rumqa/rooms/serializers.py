@@ -39,7 +39,7 @@ class ChatSerializer(serializers.ModelSerializer):
     chat_messages = ChatMessageSerializer(many=True)
     class Meta:
         model = models.Chat
-        fields = ('chat_messages', 'room')
+        fields = ('id', 'chat_messages', 'room')
         read_only_fields = ('chat_messages',)
 
 #<----------------------------- Question Page ----------------------------->#
