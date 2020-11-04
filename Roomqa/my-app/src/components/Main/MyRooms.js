@@ -33,8 +33,8 @@ function Room(props) {
     <div className="nested_room_bb">
       <Link to={room.path}>
         <div className="row no-gutters nested_room p-1">
-          <div className="col-3 nested_room_name">{room.name}</div>
-          <div className="col-6 col-md-7 col-lg-8 to-el">{room.description}</div>
+          <div className="col-4 col-sm-3 nested_room_name">{room.name}</div>
+          <div className="col-5 col-sm-6 col-md-7 col-lg-8 to-el">{room.description}</div>
           <div className="col-3 col-md-2 col-lg-1"><center>{room.allowed_users.length + room.admin_list.length}</center></div>
         </div>
       </Link>
@@ -43,8 +43,8 @@ function Room(props) {
           <div key={ind + 0}>
             <Link to={room1.path}>
               <div key={ind + 1} className="row nested_room no-gutters p-1">
-                <div key={ind + 2} className="col-3 nested_room_name">&#11177;{room1.name}</div>
-                <div key={ind + 3} className="col-6 col-md-7 col-lg-8 to-el">{room1.description}</div>
+                <div key={ind + 2} className="col-4 col-sm-3 nested_room_name">&#11177;{room1.name}</div>
+                <div key={ind + 3} className="col-5 col-sm-6 col-md-7 col-lg-8 to-el">{room1.description}</div>
                 <div key={ind + 4} className="col-3 col-md-2 col-lg-1"><center>{room1.allowed_users.length + room1.admin_list.length}</center></div>
               </div>
             </Link>
@@ -53,8 +53,8 @@ function Room(props) {
                 <div key={ind + 9}>
                   <Link to={room2.path}>
                     <div key={ind + 5} className="row nested_room no-gutters p-1">
-                      <div key={ind + 6} className="col-3 pl-3 nested_room_name">&#11177;{room2.name}</div>
-                      <div key={ind + 7} className="col-6 col-md-7 col-lg-8 to-el">{room2.description}</div>
+                      <div key={ind + 6} className="col-4 col-sm-3 pl-3 nested_room_name">&#11177;{room2.name}</div>
+                      <div key={ind + 7} className="col-5 col-sm-6 col-md-7 col-lg-8 to-el">{room2.description}</div>
                       <div key={ind + 8} className="col-3 col-md-2 col-lg-1"><center>{room2.allowed_users.length + room2.admin_list.length}</center></div>
                     </div>
                   </Link>
