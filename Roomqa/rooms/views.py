@@ -93,7 +93,7 @@ def nested_rooms(request, id):
 
 
 @api_view(['POST'])
-def create_room(request):
+def create_Room(request):
     if not request.user.is_authenticated:
         return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
 
@@ -103,7 +103,7 @@ def create_room(request):
     # Если true, то редактируем существуюущую, а не создаем новую
     edit = data['edit']
     members = data['members']  # Пользователи, которых добавили в комнату
-    name = data['name'].replace('/', '')
+    name = data['name'].replace('?','').replace('/','')
     description = data['description']
     room = Room.objects.get(pk=data['room'])
     # Проверка доступа

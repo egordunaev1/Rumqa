@@ -144,7 +144,7 @@ class CreateRoom extends Component {
       .then(res => {
         if (res.status === 200) {
           if (this.props.edit)
-            res.json().then((res) => this.setState({ redirect_path: res }));
+            res.json().then((res) => {this.setState({ redirect_path: res }); console.log(res);});
           else {
             if (this.props.getMyRooms)
               this.props.getMyRooms();

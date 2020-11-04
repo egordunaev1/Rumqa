@@ -29,7 +29,7 @@ urlpatterns = [
     re_path(r'^room_data/', room_data),
     re_path(r'^nested_rooms/(?P<id>\d+)/', nested_rooms),
     re_path(r'^get_questions/', get_questions),
-    re_path(r'^create_room/$', create_room),
+    re_path(r'^create_room/$', create_Room),
     re_path(r'^upload_image/$', upload_image),
     re_path(r'^upload_code/$', upload_code),
     re_path(r'^send_message/$', send_message),
