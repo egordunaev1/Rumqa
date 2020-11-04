@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import Interweave from 'interweave';
 import {getCookie} from '../../cookieOperations';
+import { getBackend } from '../../utility';
 
 function ChooseBlock(props) {
   const cur = props.current_block;
   return (
     <div>
       <div className="d-flex">
-        <img alt="" src={props.backend + "/media/images/icons/textblock.png"} width="30px" height="30px" className={"cursor-pointer " + (cur === 'text' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'text')} />
+        <img alt="" src={getBackend() + "/media/images/icons/textblock.png"} width="30px" height="30px" className={"cursor-pointer " + (cur === 'text' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'text')} />
         <img alt="" src="http://xn----7sb9ahdajscmg.xn--p1ai/images/35.png" width="30px" height="30px" className={"imageblockicon cursor-pointer " + (cur === 'image' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'image')} />
-        <img alt="" src={props.backend + '/media/images/icons/codeblock.png'} width="30px" height="30px" className={"cursor-pointer " + (cur === 'code' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'code')} />
+        <img alt="" src={getBackend() + '/media/images/icons/codeblock.png'} width="30px" height="30px" className={"cursor-pointer " + (cur === 'code' ? '' : 'not-') + "active-icon"} onClick={() => props.handleChangeType(props.ind, 'code')} />
       </div>
       {props.ind !== 0 ?
         <div className="d-flex mt-1">
@@ -17,7 +18,7 @@ function ChooseBlock(props) {
         </div>
         :
         <div className="d-flex mt-1">
-          <img alt="" src={props.backend + "/media/images/icons/send.png"} width="30px" className="cursor-pointer" onClick={() => props.sendMessage()} />
+          <img alt="" src={getBackend() + "/media/images/icons/send.png"} width="30px" className="cursor-pointer" onClick={() => props.sendMessage()} />
         </div>
       }
     </div>
@@ -27,7 +28,7 @@ function ChooseBlock(props) {
 function AddBlock(props) {
   return (
     <div className="container-fluid my-2 addblock d-flex">
-      <img alt="" src={props.backend + "/media/images/icons/add.png"} height="30px" onClick={() => props.addBlock(props.ind)} className="cursor-pointer mx-auto" />
+      <img alt="" src={getBackend() + "/media/images/icons/add.png"} height="30px" onClick={() => props.addBlock(props.ind)} className="cursor-pointer mx-auto" />
     </div>
   )
 }
@@ -152,7 +153,7 @@ class CodeBlock extends Component {
     return (
       <div className="container-fluid pl-0">
         <div className="d-flex flex-row-reverse container-fluid pr-0">
-          <ChooseBlock backend={this.props.backend} frontend={this.props.frontend} sendMessage={this.props.sendMessage} handleChangeType={this.props.handleChangeType} ind={this.props.ind} current_block='code' deleteBlock={this.props.deleteBlock} />
+          <ChooseBlock sendMessage={this.props.sendMessage} handleChangeType={this.props.handleChangeType} ind={this.props.ind} current_block='code' deleteBlock={this.props.deleteBlock} />
           <div className="container-fluid">
             <div className="d-flex">
               <div className="container-fluid p-0">
@@ -193,7 +194,7 @@ class CodeBlock extends Component {
             <Interweave content={this.props.value.code} />
           </div>
         </div>
-        <AddBlock backend={this.props.backend} ind={this.props.ind} addBlock={this.props.addBlock} />
+        <AddBlock ind={this.props.ind} addBlock={this.props.addBlock} />
       </div>
     )
   }
@@ -203,7 +204,7 @@ function ImageBlock(props) {
   return (
     <div className="container-fluid pl-0">
       <div className="d-flex flex-row-reverse container-fluid pr-0 pl-0">
-        <ChooseBlock backend={props.backend} frontend={props.frontend} sendMessage={props.sendMessage} handleChangeType={props.handleChangeType} ind={props.ind} current_block='image' deleteBlock={props.deleteBlock} />
+        <ChooseBlock handleChangeType={props.handleChangeType} ind={props.ind} current_block='image' deleteBlock={props.deleteBlock} />
         <form className="container-fluid" name="submit-image-form">
           <label className="mr-sm-2">Прикрепить изображение</label>
           <div className="input-group">
@@ -219,12 +220,12 @@ function ImageBlock(props) {
           {props.value.map((image, ind) => (
             <div key={ind + 'd1'} className="mt-2 ml-1" style={{ display: 'inline-block' }}>
               <img alt="" key={ind + 'i1'} src={image} className="image-block-img" />
-              <img alt="" key={ind + 'i2'} src={props.backend + '/media/images/icons/close.png'} height="10px" width="10px" className="image-delete" onClick={() => props.deleteImage(props.ind, ind)} />
+              <img alt="" key={ind + 'i2'} src={getBackend() + '/media/images/icons/close.png'} height="10px" width="10px" className="image-delete" onClick={() => props.deleteImage(props.ind, ind)} />
             </div>
           ))}
         </form>
       </div>
-      <AddBlock backend={props.backend} ind={props.ind} addBlock={props.addBlock} />
+      <AddBlock ind={props.ind} addBlock={props.addBlock} />
     </div>
   )
 }
@@ -236,29 +237,23 @@ class TextBlock extends Component {
     return (
       <div className="container-fluid pl-0">
         <div className="d-flex flex-row-reverse container-fluid pr-0">
-          <ChooseBlock backend={this.props.backend} frontend={this.props.frontend} sendMessage={this.props.sendMessage} handleChangeType={this.props.handleChangeType} ind={this.props.ind} current_block='text' deleteBlock={this.props.deleteBlock} />
+          <ChooseBlock sendMessage={this.props.sendMessage} handleChangeType={this.props.handleChangeType} ind={this.props.ind} current_block='text' deleteBlock={this.props.deleteBlock} />
           <textarea placeholder="Написать текст" className="p-1 container-fluid mr-2 font-16" value={this.props.value} onKeyUp={(e) => textarea_resize(e, 24, 3)} onChange={(e) => this.props.handleChange(e, this.props.ind)} />
         </div>
-        <AddBlock backend={this.props.backend} ind={this.props.ind} addBlock={this.props.addBlock} />
+        <AddBlock ind={this.props.ind} addBlock={this.props.addBlock} />
       </div>
     )
   }
 }
 
 class CreateMessage extends Component {
-  constructor(props) {
-    super(props);
-    this.backend = 'http://194.58.102.76:8000';
-    this.frontend = 'http://194.58.102.76:3000';
-  }
-
   getCode = (ind, _code, _style, _lang) => {
     const code = _code.value;
     const style = _style.value;
     const lang = _lang.value;
     const id = (new Date()).toISOString().replace(/[:.-]/g, () => '');
 
-    fetch(this.backend + '/upload_code/', {
+    fetch(getBackend() + '/upload_code/', {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
@@ -313,7 +308,7 @@ class CreateMessage extends Component {
 
   submitImage = (form, ind) => {
     let formData = new FormData(form);
-    fetch(this.backend + '/upload_image/', {
+    fetch(getBackend() + '/upload_image/', {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
@@ -326,7 +321,7 @@ class CreateMessage extends Component {
             .then(json => {
               const struct = this.props.struct;
               if (json !== 'Type error') {
-                struct[ind].value.push(this.backend + '/media/' + json);
+                struct[ind].value.push(getBackend() + '/media/' + json);
                 this.props.setStruct(struct);;
               }
               else alert('Некорректный тип файла')
@@ -366,11 +361,11 @@ class CreateMessage extends Component {
       this.props.struct.map((block, ind) => {
         switch (block.type) {
           case 'text':
-            return <TextBlock backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} deleteBlock={this.deleteBlock} key={ind} value={block.value} ind={ind} handleChange={this.handleChange} handleChangeType={this.handleChangeType} addBlock={this.addBlock} />
+            return <TextBlock sendMessage={this.sendMessage} deleteBlock={this.deleteBlock} key={ind} value={block.value} ind={ind} handleChange={this.handleChange} handleChangeType={this.handleChangeType} addBlock={this.addBlock} />
           case 'image':
-            return <ImageBlock backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} deleteBlock={this.deleteBlock} key={ind} value={block.value} ind={ind} submitImage={this.submitImage} handleChangeType={this.handleChangeType} deleteImage={this.deleteImage} addBlock={this.addBlock} />
+            return <ImageBlock sendMessage={this.sendMessage} deleteBlock={this.deleteBlock} key={ind} value={block.value} ind={ind} submitImage={this.submitImage} handleChangeType={this.handleChangeType} deleteImage={this.deleteImage} addBlock={this.addBlock} />
           case 'code':
-            return <CodeBlock backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} getCode={this.getCode} deleteBlock={this.deleteBlock} key={ind} value={block.value} ind={ind} submitImage={this.submitImage} handleChangeType={this.handleChangeType} addBlock={this.addBlock} />
+            return <CodeBlock sendMessage={this.sendMessage} getCode={this.getCode} deleteBlock={this.deleteBlock} key={ind} value={block.value} ind={ind} submitImage={this.submitImage} handleChangeType={this.handleChangeType} addBlock={this.addBlock} />
           default:
             return '';
         }

@@ -9,6 +9,7 @@ import Chat from './Chat';
 import Members from './Members';
 import CreateQuestion from './CreateQuestion';
 import {getCookie} from '../../cookieOperations';
+import { getBackend } from '../../utility';
 
 class Main extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class Main extends Component {
     if (getCookie('token')) {
       headers = { Authorization: `JWT ${getCookie('token')}` };
     }
-    fetch('http://194.58.102.76:8000/room_data' + this.props.location.pathname, {
+    fetch(getBackend() + '/room_data' + this.props.location.pathname, {
       headers: headers,
       method: 'GET',
     }).then(res => {

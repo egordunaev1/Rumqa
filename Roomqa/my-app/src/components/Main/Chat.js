@@ -3,6 +3,7 @@ import BrowseMessages from './BrowseMessages';
 import { getCookie } from '../../cookieOperations';
 import Scrollbar from 'react-scrollbars-custom';
 import CreateMessage from './CreateMessage';
+import { getBackend } from '../../utility';
 
 function TopPanel(props) {
   return (
@@ -17,8 +18,6 @@ class Chat extends Component {
     this.code = {};
     this.style = {};
     this.lang = {};
-    this.backend = 'http://194.58.102.76:8000';
-    this.frontend = 'http://194.58.102.76:3000';
     this.state = {
       nm_height: 140,
       height: 0,
@@ -65,7 +64,7 @@ class Chat extends Component {
   }
 
   sendMessage = () => {
-    fetch(this.backend + '/send_message/', {
+    fetch(getBackend() + '/send_message/', {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
@@ -106,8 +105,8 @@ class Chat extends Component {
     }
     var token = getCookie('token');
     var headers = (token ? { Authorization: `JWT ${token}` } : {});
-    if (this.state.mm)
-      fetch(this.backend + '/more_messages/', {
+    if (this.state.mm || !last)
+      fetch(getBackend() + '/more_messages/', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
@@ -120,9 +119,11 @@ class Chat extends Component {
           res.json().then(res => {
             let messages = this.state.messages;
             if (last)
-              messages = res.concat(messages);
-            else messages = messages.concat(res);
+              messages = messages.concat(res);
+            else messages = res.concat(messages);
             let mm = res.length && res.length % 10 === 0;
+            if (last)
+              mm
             this.setState({ messages: messages, mm: mm });
           });
         else {
@@ -159,7 +160,7 @@ class Chat extends Component {
           </Scrollbar>
           <Scrollbar style={{ height: strh, width: '100%', borderTop: '2px solid #cdd1d5' }}>
             <div className="new-message mt-auto container-fluid p-2" ref={this.new_message}>
-              {this.props.user ? <CreateMessage setStruct={(struct) => this.setState({ struct: struct })} struct={this.state.struct} backend={this.backend} frontend={this.frontend} sendMessage={this.sendMessage} /> : ''}
+              {this.props.user ? <CreateMessage setStruct={(struct) => this.setState({ struct: struct })} struct={this.state.struct} sendMessage={this.sendMessage} /> : ''}
             </div>
           </Scrollbar>
         </div>

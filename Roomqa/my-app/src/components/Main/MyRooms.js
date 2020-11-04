@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import CreateRoom from './CreateRoom';
 import Wrapper from './Wrapper';
-import {getCookie} from '../../cookieOperations';
+import { getCookie } from '../../cookieOperations';
+import { getBackend } from '../../utility';
 
 function MRTopPanel(props) {
   return (
     <div className="container-fluid bg-primary text-white p-1 no-bb">
       <div className="row no-gutters">
         <div className="col-3">Мои комнаты</div>
-        <div className="col-7 col-md-8 before-sep" style={{marginLeft: -5+'px'}}>Описание</div>
-        <div className="col-2 col-md-1 before-sep">Участники</div>
+        <div className="col-6 col-md-8 before-sep" style={{ marginLeft: -5 + 'px' }}>Описание</div>
+        <div className="col-3 col-md-1 before-sep">Участники</div>
       </div>
     </div>
   )
@@ -86,7 +87,7 @@ class MyRooms extends Component {
   getMyRooms = () => {
     this.setState({ is_loading: true });
     var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
-    fetch('http://194.58.102.76:8000/my_rooms/', {
+    fetch(getBackend() + '/my_rooms/', {
       method: 'GET',
       headers: headers
     }).then(res => {
@@ -99,7 +100,7 @@ class MyRooms extends Component {
   render() {
     let rooms = this.state.my_rooms;
     if (this.state.error == 401 && getCookie('token') && this.props.user) {
-      this.setState({error: null});
+      this.setState({ error: null });
       this.getMyRooms();
     }
     if (this.state.active_tab === 1)
@@ -126,13 +127,13 @@ class MyRooms extends Component {
                     </div>
                   ))
                 }
-                <AddRoom addRoom={() => this.setState({active_tab: 2})} user={this.props.user} />
+                <AddRoom addRoom={() => this.setState({ active_tab: 2 })} user={this.props.user} />
               </div>
             }
           </div>
         </Wrapper>
       );
-    else return <CreateRoom need_return_btn={true} getMyRooms={this.getMyRooms} edit={false} room={{id: 18, name: '', allowed_users: [], admin_list: []}} user={this.props.user} setError={(error) => this.setState({error: error})} switchActiveTab={(a, at) => this.setState({active_tab: at})} />
+    else return <CreateRoom need_return_btn={true} getMyRooms={this.getMyRooms} edit={false} room={{ id: 18, name: '', allowed_users: [], admin_list: [] }} user={this.props.user} setError={(error) => this.setState({ error: error })} switchActiveTab={(a, at) => this.setState({ active_tab: at })} />
   }
 }
 

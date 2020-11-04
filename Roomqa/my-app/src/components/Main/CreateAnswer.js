@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getCookie } from '../../cookieOperations';
 import CreateMessage from './CreateMessage';
+import { getBackend } from '../../utility';
 
 class CreateAnswer extends Component {
   constructor(props) {
@@ -8,8 +9,6 @@ class CreateAnswer extends Component {
     this.code = {};
     this.style = {};
     this.lang = {};
-    this.backend = 'http://194.58.102.76:8000';
-    this.frontend = 'http://194.58.102.76:3000';
     this.state = {
       struct: [
         {
@@ -42,7 +41,7 @@ class CreateAnswer extends Component {
   setStruct = (struct) => this.setState({ struct: struct });
 
   create = (type) => {
-    fetch(this.backend + '/send_message/', {
+    fetch(getBackend() + '/send_message/', {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`

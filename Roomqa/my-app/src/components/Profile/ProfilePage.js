@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {getCookie} from '../../cookieOperations';
+import { getBackend } from '../../utility';
 
 function PRow(props) {
   return (
@@ -62,7 +63,7 @@ class ProfilePage extends Component {
 
   update_friend_list(data) {
     this.setState({is_loading: true});
-    fetch('http://194.58.102.76:8000/update_friend_list/' + this.props.owner.id + '/', {
+    fetch(getBackend() + '/update_friend_list/' + this.props.owner.id + '/', {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
@@ -79,7 +80,7 @@ class ProfilePage extends Component {
       <div className="pcontent">
         <div>
           <div className="media">
-            <img alt=""  src={"http://194.58.102.76:8000" + this.props.owner.profile.cover} className="mr-3 rounded" width="65px" height="65px" />
+            <img alt=""  src={getBackend() + this.props.owner.profile.cover} className="mr-3 rounded" width="65px" height="65px" />
             <div className="media-body">
               <h5 className="mt-0 text-primary owner-select-none">{this.props.owner.profile.first_name + ' ' + this.props.owner.profile.last_name + ' (' + this.props.owner.username + ')'}</h5>
                 Зарегистрирован: {this.props.owner.profile.reg_date.substring(0, 10)}

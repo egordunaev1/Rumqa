@@ -9,6 +9,7 @@ import {
   Route
 } from "react-router-dom";
 import {getCookie} from '../../cookieOperations';
+import { getBackend } from '../../utility';
 
 
 class Profile extends Component {
@@ -57,7 +58,7 @@ class Profile extends Component {
       if (getCookie('token')) {
         headers = { Authorization: `JWT ${getCookie('token')}` };
       }
-      fetch('http://194.58.102.76:8000/user_data/' + id, {
+      fetch(getBackend() + '/user_data/' + id, {
         headers: headers,
         method: 'get',
       }).then(res => {

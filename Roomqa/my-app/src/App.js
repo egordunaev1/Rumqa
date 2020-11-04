@@ -11,6 +11,7 @@ import {
   Route
 } from "react-router-dom";
 import { getCookie, deleteCookie, setCookie } from './cookieOperations';
+import { getBackend } from './utility';
 
 
 class App extends Component {
@@ -21,8 +22,6 @@ class App extends Component {
       user: null,
       profile_active_tab: 1
     };
-    this.backend = 'http://194.58.102.76:8000';
-    this.frontend = 'http://194.58.102.76:3000';
     this.updateUserData = this.updateUserData.bind(this);
     this.update_pat = this.update_pat.bind(this);
   }
@@ -34,7 +33,7 @@ class App extends Component {
   updateUserData() {
     let logged_in = getCookie('token') ? true : false;
     if (this.state.logged_in || logged_in) {
-      fetch(this.backend + '/current-user/', {
+      fetch(getBackend() + '/current-user/', {
         headers: {
           Authorization: `JWT ${getCookie('token')}`
         }
@@ -62,7 +61,7 @@ class App extends Component {
 
   handle_login = (e, data) => {
     e.preventDefault();
-    fetch(this.backend+'/token-auth/', {
+    fetch(getBackend()+'/token-auth/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -70,7 +69,7 @@ class App extends Component {
       body: JSON.stringify(data)
     })
       .then(res => res.json())
-      .then(json => {setCookie('token', json.token, {'max-age': 2592000, 'samesite': 'Lax'}); console.log(json.token);})
+      .then(json => {setCookie('token', json.token, {'max-age': 2592000, 'samesite': 'Lax'});})
       .then(() => this.updateUserData());
   };
 
@@ -99,7 +98,7 @@ class App extends Component {
         </div>
       </Router>
     );
-  }
+  } 
 }
 
 export default App;

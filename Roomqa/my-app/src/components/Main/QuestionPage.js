@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Interweave from 'interweave';
 import CreateAnswer from './CreateAnswer';
 import {getCookie} from '../../cookieOperations';
+import { getBackend } from '../../utility';
 
 
 function BrowseText(props) {
@@ -72,7 +73,7 @@ function BrowseQuestion(props) {
       <div className="d-flex q-creator pt-2">
         <div className="ml-1 d-flex">
           <Link to={"/profile/" + creator.id}>
-            <img alt=""  src={'http://194.58.102.76:8000' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
+            <img alt=""  src={getBackend() + '' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
             <span className="mt-1 ml-1 text-black">{creator.profile.first_name} {creator.profile.last_name}</span>
           </Link>
         </div>
@@ -102,15 +103,15 @@ function BrowseAnswer(props) {
       <div className="d-flex a-creator pt-2">
         <div className="ml-1 container-fluid p-0 d-flex">
           <Link to={"/profile/" + creator.id}>
-            <img alt=""  src={'http://194.58.102.76:8000' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
+            <img alt=""  src={getBackend() + '' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
             <span className="mt-1 ml-1 text-black">{creator.profile.first_name} {creator.profile.last_name}</span>
           </Link>
           <div className="cursor-pointer ml-3" onClick={() => props.like(props.answer.id, '+')}>
-            <img alt=""  src="http://194.58.102.76:8000/media/images/icons/like.png" height="16px" />
+            <img alt=""  src={getBackend() + "/media/images/icons/like.png"} height="16px" />
           </div>
           <div className={"mx-1 grading text-" + (likes < 0 ? 'danger' : 'success')}>{likes}</div>
           <div className="cursor-pointer mt-1" onClick={() => props.like(props.answer.id, '-')}>
-            <img alt=""  src="http://194.58.102.76:8000/media/images/icons/dislike.png" height="16px" />
+            <img alt=""  src={getBackend() + "/media/images/icons/dislike.png"} height="16px" />
           </div>
           {
             iuqc && !dbe && !iuac &&
@@ -165,7 +166,7 @@ class Question extends Component {
   }
 
   like = (id, l) => {
-    fetch('http://194.58.102.76:8000/like/', {
+    fetch(getBackend() + '/like/', {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
@@ -193,7 +194,7 @@ class Question extends Component {
 
   getQuestion = (id) => {
     var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
-    fetch('http://194.58.102.76:8000/get_questions/' + this.props.room.id + '/' + id, {
+    fetch(getBackend() + '/get_questions/' + this.props.room.id + '/' + id, {
       method: 'GET',
       headers: headers
     }).then(res => {
@@ -204,7 +205,7 @@ class Question extends Component {
   }
 
   chooseBest = (answer_id) => {
-    fetch('http://194.58.102.76:8000/choose_best/', {
+    fetch(getBackend() + '/choose_best/', {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
@@ -291,7 +292,7 @@ class QuestionPage extends Component {
   getQuestions = (page = this.state.page) => {
     this.setState({ is_loading: true });
     var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
-    fetch('http://194.58.102.76:8000/get_questions/many/' + this.props.room.id + '/' + page, {
+    fetch(getBackend() + '/get_questions/many/' + this.props.room.id + '/' + page, {
       method: 'GET',
       headers: headers
     }).then(res => {

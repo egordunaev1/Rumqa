@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Interweave from 'interweave';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { getBackend } from '../../utility';
 
 function BrowseText(props) {
   var block = props.block;
@@ -41,7 +42,7 @@ function BrowseImage(props) {
     <div>
       {
         block.value.map((image, ind) => (
-          <img alt=""  className="b-image cursor-pointer mt-1" src={image} key={ind} onClick={() => props.openImage(image)} />
+          <img alt="" className="b-image cursor-pointer mt-1" src={image} key={ind} onClick={() => props.openImage(image)} />
         ))
       }
     </div>
@@ -63,13 +64,12 @@ function ChooseType(props) {
 function BrowseMessage(props) {
   var message = JSON.parse(props.message.chat_message_body.content);
   var sender = props.message.sender;
-  var backend = 'http://194.58.102.76:8000';
   return (
     <div className={"message my-1 p-1" + (props.user && sender.username === props.user.username ? " ml-2" : " message-not-my ml-auto mr-2")}>
       <div className="d-flex mes-sender">
         <div className="ml-1 d-flex">
           <Link to={'/profile/' + sender.id}>
-            <img alt=""  src={backend + sender.profile.cover} className="cover-img" width="32px" height="32px" />
+            <img alt="" src={getBackend() + sender.profile.cover} className="cover-img" width="32px" height="32px" />
             <span className="mt-1 ml-1 text-black-50">{sender.profile.first_name} {sender.profile.last_name}</span>
           </Link>
         </div>
@@ -120,7 +120,11 @@ class BrowseMessages extends Component {
         }
         {
           this.state.opened &&
-          <div className="opened cursor-pointer d-flex" onClick={() => this.closeImage()}><center className="mx-auto my-auto"><img alt=""  src={this.state.opened} /></center></div>
+          <div className="opened cursor-pointer d-flex" onClick={() => this.closeImage()}>
+            <center className="mx-auto my-auto">
+              <img alt="" src={this.state.opened} />
+            </center>
+          </div>
         }
       </div>
     )

@@ -3,6 +3,7 @@ import {
   Redirect
 } from "react-router-dom";
 import {getCookie} from '../../cookieOperations';
+import { getBackend } from '../../utility';
 
 class Reg extends React.Component {
   state = {
@@ -25,7 +26,7 @@ class Reg extends React.Component {
 
   handle_signup = (e, data) => {
     e.preventDefault();
-    fetch('http://194.58.102.76:8000/create_user/', {
+    fetch(getBackend() + '/create_user/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

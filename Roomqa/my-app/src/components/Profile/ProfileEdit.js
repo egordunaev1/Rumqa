@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {getCookie} from '../../cookieOperations';
+import { getBackend } from '../../utility';
 
 function PEInput(props) {
   return (
@@ -39,7 +40,7 @@ class ProfileEdit extends Component {
   handle_submit(e, data) {
     e.preventDefault();
     let formData = new FormData(e.target);
-    fetch('http://194.58.102.76:8000/profile_edit/', {
+    fetch(getBackend() + '/profile_edit/', {
       method: 'PUT',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
@@ -72,7 +73,7 @@ class ProfileEdit extends Component {
 
 
   add_friend(id) {
-    fetch('http://194.58.102.76:8000/update_friend_list/' + id, {
+    fetch(getBackend() + '/update_friend_list/' + id, {
       method: 'POST',
       headers: {
         Authorization: `JWT ${getCookie('token')}`

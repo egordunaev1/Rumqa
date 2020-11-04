@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {getCookie} from '../../cookieOperations';
+import { getBackend } from '../../utility';
 
 function is_admin(user, admin_list) {
   if (!user)
@@ -18,9 +19,9 @@ function NRTopPanel(props) {
   return (
     <div className="container-fluid bg-primary text-white p-1 no-bb">
       <div className="row no-gutters">
-        <div className="col-2">Название</div>
-        <div className="col-8 col-md-9 before-sep">Описание</div>
-        <div className="col-2 col-md-1 before-sep">Участники</div>
+        <div className="col-3">Название</div>
+        <div className="col-6 col-md-8 before-sep">Описание</div>
+        <div className="col-3 col-md-1 before-sep">Участники</div>
       </div>
     </div>
   )
@@ -64,7 +65,7 @@ class NestedRooms extends Component {
 
   getNestedRooms = () => {
     var headers = (getCookie('token') ? { Authorization: `JWT ${getCookie('token')}` } : {});
-    fetch('http://194.58.102.76:8000/nested_rooms/' + this.props.room.id, {
+    fetch(getBackend() + '/nested_rooms/' + this.props.room.id, {
       method: 'GET',
       headers: headers
     })
