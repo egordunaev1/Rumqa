@@ -101,7 +101,7 @@ class Profile extends Component {
                           </li>
                           : 
                           <li>
-                            <Link to={"/chat/" + this.state.user_data.id}>Чат</Link>
+                            <Link to={"/chat/" + this.state.user_data.id} className="no-border">Чат</Link>
                           </li>
                           }
                       </ul>
