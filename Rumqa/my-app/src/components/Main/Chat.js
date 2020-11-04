@@ -120,6 +120,12 @@ class Chat extends Component {
         if (res.status === 200)
           res.json().then(res => {
             let messages = this.state.messages;
+            if (!last) {
+              for (var i = 0; i < res.length; i++)
+                for (var j = 0; j < messages.length; j++)
+                  if (res[i].id == messages[j].id)
+                    res.splice(i, 1);
+            }
             if (last)
               messages = res.concat(messages);
             else messages = messages.concat(res);
