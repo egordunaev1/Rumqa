@@ -99,7 +99,11 @@ class Profile extends Component {
                           <li className="nav-item" onClick={() => this.props.update_pat(3)}>
                             <Link to={"/profile/" + Number.parseInt(this.props.match.params.id) + "/edit/"} className={"nav-link" + (this.props.active_tab === 3 ? ' active' : '')}>Редактировать</Link>
                           </li>
-                          : ''}
+                          : 
+                          <li>
+                            <Link to={"/chat/" + this.state.user_data.id}>Чат</Link>
+                          </li>
+                          }
                       </ul>
                       <div id="profile-switch">
                         <Switch>
