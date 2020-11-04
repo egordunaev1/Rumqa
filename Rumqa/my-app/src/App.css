@@ -745,3 +745,11 @@ textarea {
 .p-a {
     position: absolute;
 }
+
+.no-border {
+    border: none !important;
+}
+
+.no-border:active:hover {
+    border: none !important;
+}
