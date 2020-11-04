@@ -32,8 +32,8 @@ class ChatMessage(models.Model):
 
 class Chat(models.Model):
     room = models.OneToOneField('Room', on_delete=models.CASCADE, related_name='chat', null=True, blank=True)
-    #first_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chats_f", null=True)
-    #second_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chats_s", null=True)
+    first_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chats_f", null=True)
+    second_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chats_s", null=True)
 
 #<----------------------------- Question Page ----------------------------->#
 
