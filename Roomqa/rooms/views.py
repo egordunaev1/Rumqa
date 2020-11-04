@@ -438,8 +438,7 @@ def get_questions(request):
                                                  page*10: page*10 + 10], many=True)
     else:
         try:
-            response = QuestionSerializer(
-                room.question_page.questions.get(pk=question))
+            response = QuestionSerializer(room.question_page.questions.get(pk=question))
         except:
             return Response(b'', status=status.HTTP_404_NOT_FOUND)
     return Response(response.data, status=status.HTTP_200_OK)
