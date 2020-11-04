@@ -49,7 +49,7 @@ class CreateQuestion extends Component {
         Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
-        room: this.props.room.id,
+        chat: this.props.room.chat,
         type: type,
         title: this.state.title,
         struct: this.state.struct
