@@ -278,6 +278,7 @@ def send_message(request):
     user = request.user
     data = json.loads(request.body)
     chat = data['chat']
+    print(data['chat'])
     raw_message = data['struct']
     q_t = data['type']  # Тип сообщения (question, message, answer)
     title = data.get('title', '')
@@ -459,7 +460,6 @@ def more_messages(request):
     last_message = data['last_message']
     room = chat.room
     user = request.user
-    print(data['chat'])
 
     if not room or room.id != 19 and not user:
         return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
