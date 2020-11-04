@@ -34,8 +34,8 @@ function Room(props) {
       <Link to={room.path}>
         <div className="row no-gutters nested_room p-1">
           <div className="col-3 nested_room_name">{room.name}</div>
-          <div className="col-7 col-md-8 to-el">{room.description}</div>
-          <div className="col-2 col-md-1"><center>{room.allowed_users.length + room.admin_list.length}</center></div>
+          <div className="col-6 col-md-8 to-el">{room.description}</div>
+          <div className="col-3 col-md-1"><center>{room.allowed_users.length + room.admin_list.length}</center></div>
         </div>
       </Link>
       {
@@ -44,8 +44,8 @@ function Room(props) {
             <Link to={room1.path}>
               <div key={ind + 1} className="row nested_room no-gutters p-1">
                 <div key={ind + 2} className="col-3 nested_room_name">&#11177;{room1.name}</div>
-                <div key={ind + 3} className="col-7 col-md-8 to-el">{room1.description}</div>
-                <div key={ind + 4} className="col-2 col-md-1"><center>{room1.allowed_users.length + room1.admin_list.length}</center></div>
+                <div key={ind + 3} className="col-6 col-md-8 to-el">{room1.description}</div>
+                <div key={ind + 4} className="col-3 col-md-1"><center>{room1.allowed_users.length + room1.admin_list.length}</center></div>
               </div>
             </Link>
             {
@@ -54,8 +54,8 @@ function Room(props) {
                   <Link to={room2.path}>
                     <div key={ind + 5} className="row nested_room no-gutters p-1">
                       <div key={ind + 6} className="col-3 pl-3 nested_room_name">&#11177;{room2.name}</div>
-                      <div key={ind + 7} className="col-7 col-md-8 to-el">{room2.description}</div>
-                      <div key={ind + 8} className="col-2 col-md-1"><center>{room2.allowed_users.length + room2.admin_list.length}</center></div>
+                      <div key={ind + 7} className="col-6 col-md-8 to-el">{room2.description}</div>
+                      <div key={ind + 8} className="col-3 col-md-1"><center>{room2.allowed_users.length + room2.admin_list.length}</center></div>
                     </div>
                   </Link>
                   {room2.nested_rooms.length !== 0 && <div key={ind + 9} className="no-gutters ml-4 pl-3">&#11177; ...</div>}

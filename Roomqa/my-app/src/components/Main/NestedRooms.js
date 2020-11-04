@@ -31,9 +31,9 @@ function NestedRoom(props) {
   let room = props.room;
   return (
     <div className="row no-gutters nested_room nested_room_bb p-1">
-      <div className="col-2 nested_room_name">{room.name}</div>
-      <div className="col-8 col-md-9 pl-5px to-el">{room.description}</div>
-      <div className="col-2 col-md-1"><center>{room.allowed_users.length + room.admin_list.length}</center></div>
+      <div className="col-3 nested_room_name">{room.name}</div>
+      <div className="col-6 col-md-8 pl-5px to-el">{room.description}</div>
+      <div className="col-3 col-md-1"><center>{room.allowed_users.length + room.admin_list.length}</center></div>
     </div>
   )
 }
