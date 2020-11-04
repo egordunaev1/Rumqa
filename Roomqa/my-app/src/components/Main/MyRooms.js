@@ -9,8 +9,8 @@ function MRTopPanel(props) {
   return (
     <div className="container-fluid bg-primary text-white p-1 no-bb">
       <div className="row no-gutters">
-        <div className="col-3">Мои комнаты</div>
-        <div className="col-6 col-md-7 col-lg-8 before-sep" style={{ marginLeft: -5 + 'px' }}>Описание</div>
+        <div className="col-4 col-sm-3">Мои комнаты</div>
+        <div className="col-5 col-sm-6 col-md-7 col-lg-8 before-sep" style={{ marginLeft: -5 + 'px' }}>Описание</div>
         <div className="col-3 col-md-2 col-lg-1 before-sep"><center>Участники</center></div>
       </div>
     </div>
