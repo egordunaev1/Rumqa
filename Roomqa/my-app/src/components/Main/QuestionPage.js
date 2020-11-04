@@ -244,7 +244,7 @@ class Question extends Component {
         <BrowseQuestion user={this.props.user} openImage={this.props.openImage} question={q} />
         {
           q.answers.map((ans, ind) => (
-            <BrowseAnswer like={this.like} key={ind} chooseBest={this.chooseBest} user={this.props.user} openImage={this.openImage} answer={ans} does_best_exists={q.best_answer && true} is_best={q.best_answer && q.best_answer === ans.id} is_user_q_creator={this.props.user && q.creator.id === this.props.user.id} />
+            <BrowseAnswer like={this.like} key={ind} chooseBest={this.chooseBest} user={this.props.user} openImage={this.props.openImage} answer={ans} does_best_exists={q.best_answer && true} is_best={q.best_answer && q.best_answer === ans.id} is_user_q_creator={this.props.user && q.creator.id === this.props.user.id} />
           ))
         }
         {this.props.user ? <CreateAnswer setState={data => this.setState(data)} question={q} room={this.props.room} user={this.props.user} setError={this.props.setError} switchActiveTab={this.props.switchActiveTab} /> : ''}
