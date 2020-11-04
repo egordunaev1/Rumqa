@@ -122,7 +122,7 @@ class BrowseMessages extends Component {
           this.state.opened &&
           <div className="opened cursor-pointer d-flex" onClick={() => this.closeImage()}>
             <center className="mx-auto my-auto">
-              <img alt="" src={this.state.opened} />
+              <img alt="" src={this.state.opened} style={{maxHeight: document.documentElement.clientHeight + 'px'}}/>
             </center>
           </div>
         }
