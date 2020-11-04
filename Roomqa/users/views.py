@@ -117,7 +117,7 @@ def search_friends(request):
     result_not_friends = []
 
     # Если идет поиск при создании/редактировании комнаты
-    if room:
+    if room and room != 18:
         room = Room.objects.get(pk=room)
         # Поиск совпадений среди всех пользователей
         if len(data_split):

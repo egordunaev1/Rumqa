@@ -147,9 +147,7 @@ class CreateRoom extends Component {
             res.json().then((res) => {
               if (this.props.room.path != res)
                 this.setState({ redirect_path: res });
-              else
-                this.props.switchActiveTab(null, 1);
-              console.log(this.props.room.path, res, (this.props.room.path != res));
+              this.props.switchActiveTab(null, 1);
             });
           else {
             if (this.props.getMyRooms)
