@@ -19,7 +19,7 @@ function ChooseBlock(props) {
         :
         <div className="d-flex mt-1">
           {/* <img alt="" src={getBackend() + "/media/images/icons/send.png"} width="30px" className="cursor-pointer" onClick={() => props.sendMessage()} />*/}
-          <button className="btn-sm btn-success" onClick={() => props.sendMessage()}>Удалить</button>
+          <button className="btn-sm btn-success" onClick={() => props.sendMessage()}>Отправить</button>
         </div>
       }
     </div>
