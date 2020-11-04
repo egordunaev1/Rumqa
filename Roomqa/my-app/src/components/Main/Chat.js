@@ -49,7 +49,7 @@ class Chat extends Component {
     this.getMessages();
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-    this.timerId = setInterval(() => {this.getMessages(false);}, 3000);
+    this.timerId = setInterval(() => { this.getMessages(false); }, 3000);
     console.log(this.timerId);
     if (this.new_message.current)
       this.new_message.current.addEventListener('resize', this.update_nm_height);
@@ -106,14 +106,8 @@ class Chat extends Component {
     }
     var token = getCookie('token');
     var headers = (token ? { Authorization: `JWT ${token}` } : {});
-<<<<<<< HEAD
     if (this.state.mm || !last)
       fetch(getBackend() + '/more_messages/', {
-=======
-    console.log(this.state.mm, 'mm', last);
-    if (this.state.mm || !last)
-      fetch(this.backend + '/more_messages/', {
->>>>>>> 01d61a5ac5a8391056bd7fcddac410159dba32ae
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
@@ -126,19 +120,11 @@ class Chat extends Component {
           res.json().then(res => {
             let messages = this.state.messages;
             if (last)
-<<<<<<< HEAD
-              messages = messages.concat(res);
-            else messages = res.concat(messages);
-            let mm = res.length && res.length % 10 === 0;
-            if (last)
-              mm
-=======
               messages = res.concat(messages);
             else messages = messages.concat(res);
             let mm = Boolean(res.length);
-	    if (!last)
-		mm = this.state.mm;
->>>>>>> 01d61a5ac5a8391056bd7fcddac410159dba32ae
+            if (!last)
+              mm = this.state.mm;
             this.setState({ messages: messages, mm: mm });
           });
         else {
