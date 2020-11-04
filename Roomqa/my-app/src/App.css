@@ -247,9 +247,6 @@ body {
         margin-top: 10px;
         width: 100%;
     }
-    #nav-search {
-        display: none;
-    }
     #nav-login-form button {
         display: inline;
         margin-top: 10px;
