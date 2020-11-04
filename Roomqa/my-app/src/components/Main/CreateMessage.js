@@ -205,7 +205,7 @@ function ImageBlock(props) {
   return (
     <div className="container-fluid pl-0">
       <div className="d-flex flex-row-reverse container-fluid pr-0 pl-0">
-        <ChooseBlock sendMessage={this.props.sendMessage} handleChangeType={props.handleChangeType} ind={props.ind} current_block='image' deleteBlock={props.deleteBlock} />
+        <ChooseBlock sendMessage={props.sendMessage} handleChangeType={props.handleChangeType} ind={props.ind} current_block='image' deleteBlock={props.deleteBlock} />
         <form className="container-fluid" name="submit-image-form">
           <label className="mr-sm-2">Прикрепить изображение</label>
           <div className="input-group">
