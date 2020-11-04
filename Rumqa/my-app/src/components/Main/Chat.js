@@ -46,6 +46,7 @@ class Chat extends Component {
 
 
   componentDidMount() {
+    console.log(this.props.room);
     this.getMessages();
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
@@ -72,7 +73,7 @@ class Chat extends Component {
         Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
-        room: this.props.room.id,
+        chat: this.props.chat.id,
         struct: this.state.struct,
         type: 'message'
       })
@@ -112,7 +113,7 @@ class Chat extends Component {
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
-          room: this.props.room.id,
+          chat: this.props.chat.id,
           last_message: message,
           last: last
         })
