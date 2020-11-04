@@ -57,7 +57,7 @@ class Navbar extends React.Component {
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-primary" ref={this.wrapper}>
-                <Link to="/Main" className="navbar-brand">Roomqa</Link>
+                <Link to="/Main" className="navbar-brand">Rumqa</Link>
                 {
                     this.props.logged_in ?
                         <div className="" id="nav-my-rooms">

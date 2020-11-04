@@ -1,5 +1,5 @@
 """
-ASGI config for Roomqa project.
+ASGI config for Rumqa project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Roomqa.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Rumqa.settings')
 django.setup()
 
 from channels.auth import AuthMiddlewareStack

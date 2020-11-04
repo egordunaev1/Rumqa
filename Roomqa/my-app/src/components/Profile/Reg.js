@@ -55,7 +55,7 @@ class Reg extends React.Component {
       return (
         <div className="profile-body body bg-white p-3">
           <form onSubmit={e => this.handle_signup(e, this.state)}>
-            <h4 className="d-flex justify-content-center text-primary">Добро пожаловать в Roomqa!</h4>
+            <h4 className="d-flex justify-content-center text-primary">Добро пожаловать в Rumqa!</h4>
             <div>
               <label htmlFor="username">Логин</label>
               <input type="text" className="form-control" name="username" value={this.state.username} onChange={this.handle_change} placeholder="Логин" id="username" />

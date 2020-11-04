@@ -1,5 +1,5 @@
 command = '/usr/local/bin/gunicorn'
-pythonpath = '/home/Rumqa/Roomqa/'
+pythonpath = '/home/Rumqa/Rumqa/'
 bind = '127.0.0.1:8001'
 workers = 3
 user = 'root'
