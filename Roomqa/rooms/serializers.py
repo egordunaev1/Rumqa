@@ -33,7 +33,7 @@ class ChatMessageSerializer(serializers.ModelSerializer):
     chat_message_body = MessageSerializer()
     class Meta:
         model = models.ChatMessage
-        fields = ('chat_message_body', 'chat', 'sender')
+        fields = ('id', 'chat_message_body', 'chat', 'sender')
 
 class ChatSerializer(serializers.ModelSerializer):
     chat_messages = ChatMessageSerializer(many=True)
