@@ -277,19 +277,23 @@ def send_message(request):
     # Получение данных из запроса
     user = request.user
     data = json.loads(request.body)
-    room = data['room']
+    chat = data['chat']
     raw_message = data['struct']
     q_t = data['type']  # Тип сообщения (question, message, answer)
     title = data.get('title', '')
     message = []
 
     try:
-        room = Room.objects.get(pk=room)
+        chat = Chat.objects.get(pk=chat)
     except:
         return Response(b'', status=status.HTTP_404_NOT_FOUND)
 
-    # Проверка доступа
-    if not (room.id == 19 or user in room.allowed_users.all() or user in room.admin_list.all()):
+    room = chat.room
+    # Проверка доступа в комнату
+    if room and not (room.id == 19 or user in room.allowed_users.all() or user in room.admin_list.all()):
+        return Response(b'', status=status.HTTP_403_FORBIDDEN)
+
+    if not room and user != chat.first_user and user != chat.second_user:
         return Response(b'', status=status.HTTP_403_FORBIDDEN)
 
     # Отсеивание пустых блоков
@@ -316,7 +320,7 @@ def send_message(request):
     if q_t == 'message':
         message_data = {
             'chat_message_body': m,
-            'chat': room.chat,
+            'chat': chat,
             'sender': user
         }
         cm = ChatMessage(**message_data)

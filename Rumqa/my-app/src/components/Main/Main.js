@@ -61,7 +61,7 @@ class Main extends Component {
       case 2:
         return <QuestionPage setState={(state) => this.setState(state)} switchActiveTab={this.switchActiveTab} room={this.state.room} getRoom={this.getRoom} location={this.props.location} setError={this.setError} user={this.props.user} />
       case 3:
-        return <Chat setState={data => this.setState(data)} user={this.props.user} room={this.state.room} setError={this.setError} getRoom={this.getRoom} location={this.props.location} />
+        return <Chat user={this.props.user} room={this.state.room.chat} setError={this.setError} location={this.props.location} />
       case 4:
         return <Members getRoom={this.getRoom} is_admin={is_admin} room={this.state.room} username={this.props.user ? this.props.user.username : null} />
       default:

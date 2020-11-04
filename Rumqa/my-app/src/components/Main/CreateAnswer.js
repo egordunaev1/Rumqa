@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { getCookie } from '../../cookieOperations';
 import CreateMessage from './CreateMessage';
 import { getBackend } from '../../utility';
+import CreateRoom from './CreateRoom';
 
 class CreateAnswer extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class CreateAnswer extends Component {
         Authorization: `JWT ${getCookie('token')}`
       },
       body: JSON.stringify({
-        room: this.props.room.id,
+        chat: this.props.room.chat,
         type: type,
         question: this.props.question.id,
         struct: this.state.struct
