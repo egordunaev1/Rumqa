@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Interweave from 'interweave';
 import CreateAnswer from './CreateAnswer';
-import {getCookie} from '../../cookieOperations';
+import { getCookie } from '../../cookieOperations';
 import { getBackend } from '../../utility';
 
 
@@ -45,7 +45,7 @@ function BrowseImage(props) {
     <div>
       {
         block.value.map((image, ind) => (
-          <img alt=""  className="b-image cursor-pointer mt-1" src={image} key={ind} onClick={() => props.openImage(image)} />
+          <img alt="" className="b-image cursor-pointer mt-1" src={image} key={ind} onClick={() => props.openImage(image)} />
         ))
       }
     </div>
@@ -73,7 +73,7 @@ function BrowseQuestion(props) {
       <div className="d-flex q-creator pt-2">
         <div className="ml-1 d-flex">
           <Link to={"/profile/" + creator.id}>
-            <img alt=""  src={getBackend() + '' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
+            <img alt="" src={getBackend() + '' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
             <span className="mt-1 ml-1 text-black">{creator.profile.first_name} {creator.profile.last_name}</span>
           </Link>
         </div>
@@ -103,15 +103,15 @@ function BrowseAnswer(props) {
       <div className="d-flex a-creator pt-2">
         <div className="ml-1 container-fluid p-0 d-flex">
           <Link to={"/profile/" + creator.id}>
-            <img alt=""  src={getBackend() + '' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
+            <img alt="" src={getBackend() + '' + creator.profile.cover} className="cover-img" width="32px" height="32px" />
             <span className="mt-1 ml-1 text-black">{creator.profile.first_name} {creator.profile.last_name}</span>
           </Link>
           <div className="cursor-pointer ml-3" onClick={() => props.like(props.answer.id, '+')}>
-            <img alt=""  src={getBackend() + "/media/images/icons/like.png"} height="16px" />
+            <img alt="" src={getBackend() + "/media/images/icons/like.png"} height="16px" />
           </div>
           <div className={"mx-1 grading text-" + (likes < 0 ? 'danger' : 'success')}>{likes}</div>
           <div className="cursor-pointer mt-1" onClick={() => props.like(props.answer.id, '-')}>
-            <img alt=""  src={getBackend() + "/media/images/icons/dislike.png"} height="16px" />
+            <img alt="" src={getBackend() + "/media/images/icons/dislike.png"} height="16px" />
           </div>
           {
             iuqc && !dbe && !iuac &&
@@ -214,10 +214,10 @@ class Question extends Component {
         answer_id: answer_id
       })
     }).then(res => {
-      if (res.status === 200){
+      if (res.status === 200) {
         var question = this.state.question;
         question.best_answer = answer_id;
-        this.setState({question:question});
+        this.setState({ question: question });
       } else {
         this.props.setError(res.status);
       }
@@ -241,7 +241,7 @@ class Question extends Component {
           <Link to={this.props.location.pathname}>Назад</Link>
         </div>
         <div className="bg-mes p-2"><h5 className="mb-0">{q.title}</h5></div>
-        <BrowseQuestion user={this.props.user} openImage={this.openImage} question={q} />
+        <BrowseQuestion user={this.props.user} openImage={this.props.openImage} question={q} />
         {
           q.answers.map((ans, ind) => (
             <BrowseAnswer like={this.like} key={ind} chooseBest={this.chooseBest} user={this.props.user} openImage={this.openImage} answer={ans} does_best_exists={q.best_answer && true} is_best={q.best_answer && q.best_answer === ans.id} is_user_q_creator={this.props.user && q.creator.id === this.props.user.id} />
@@ -358,7 +358,17 @@ class QuestionPage extends Component {
       );
     else {
       return (
-        <Question user={this.props.user} location={this.props.location} question={search['q']} room={this.props.room} setError={this.props.setError} />
+        <div>
+          <Question user={this.props.user} location={this.props.location} question={search['q']} room={this.props.room} setError={this.props.setError} openImage={this.openImage} />
+          {
+            this.state.opened &&
+            <div className="opened cursor-pointer d-flex" onClick={() => this.closeImage()}>
+              <center className="mx-auto my-auto">
+                <img alt="" src={this.state.opened} style={{ maxHeight: document.documentElement.clientHeight + 'px' }} />
+              </center>
+            </div>
+          }
+        </div>
       )
     }
   }
