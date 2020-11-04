@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -103,7 +104,7 @@ def create_Room(request):
     # Если true, то редактируем существуюущую, а не создаем новую
     edit = data['edit']
     members = data['members']  # Пользователи, которых добавили в комнату
-    name = data['name'].replace('?','').replace('/','')
+    name = data['name'].replace('?', '').replace('/', '')
     description = data['description']
     room = Room.objects.get(pk=data['room'])
     # Проверка доступа
@@ -349,6 +350,29 @@ def send_message(request):
     # Ответ
     return Response(resp, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_private_chat(request):
+    if not request.user.is_authenticated:
+        return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
+
+    # Получение данных из запроса
+    data = json.loads(request.body)
+    try:
+        user = request.user
+        interlocutor = data['interlocutor']
+    except:
+        return Response(b'', status=status.HTTP_400_BAD_REQUEST)
+
+    # Поиск чата
+    chat = Chat.objects.filter(Q(first_user=user, second_user=interlocutor) | Q(
+        first_user=interlocutor, second_user=user))
+    if len(chat):
+        chat = chat[0]
+    else:
+        chat = Chat(first_user=user, second_user=interlocutor)
+
+    # Ответ
+    return Response(chat.id, status=status.HTTP_200_OK)
 
 # Изменение статуса участника комнаты (админ, обычный)
 @api_view(['POST'])

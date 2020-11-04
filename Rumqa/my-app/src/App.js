@@ -4,6 +4,7 @@ import Profile from './components/Profile/Profile';
 import Reg from './components/Profile/Reg';
 import Main from './components/Main/Main';
 import MyRooms from './components/Main/MyRooms';
+import PrivateChat from './components/Profile/Chat';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -12,7 +13,6 @@ import {
 } from "react-router-dom";
 import { getCookie, deleteCookie, setCookie } from './cookieOperations';
 import { getBackend } from './utility';
-
 
 class App extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class App extends Component {
   }
 
   update_pat(num) {
-    this.setState({profile_active_tab: num});
+    this.setState({ profile_active_tab: num });
   }
 
   updateUserData() {
@@ -41,7 +41,7 @@ class App extends Component {
         .then(response => {
           if (response.status !== 200) {
             deleteCookie('token');
-            this.setState({ logged_in: false, user: null});
+            this.setState({ logged_in: false, user: null });
           }
           else {
             response.json()
@@ -61,7 +61,7 @@ class App extends Component {
 
   handle_login = (e, data) => {
     e.preventDefault();
-    fetch(getBackend()+'/token-auth/', {
+    fetch(getBackend() + '/token-auth/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ class App extends Component {
       body: JSON.stringify(data)
     })
       .then(res => res.json())
-      .then(json => {setCookie('token', json.token, {'max-age': 2592000, 'samesite': 'Lax'});})
+      .then(json => { setCookie('token', json.token, { 'max-age': 2592000, 'samesite': 'Lax' }); })
       .then(() => this.updateUserData());
   };
 
@@ -90,15 +90,16 @@ class App extends Component {
             handle_logout={this.handle_logout}
             update_pat={this.update_pat} />
           <Switch>
-            <Route exact path="/registration" render={(props) => <Reg {...props} updateUser={this.updateUserData} handle_signup={this.handle_signup} logged_in={this.state.logged_in}/>} />
+            <Route exact path="/registration" render={(props) => <Reg {...props} updateUser={this.updateUserData} handle_signup={this.handle_signup} logged_in={this.state.logged_in} />} />
             <Route path="/profile/:id?" render={(props) => <Profile {...props} user={this.state.user} updateUser={this.updateUserData} update_pat={this.update_pat} active_tab={this.state.profile_active_tab} />} />
+            <Route path="/chat/:user_id?" render={(props) => <PrivateChat {...props} user={this.state.user} />} />
             <Route exact path="/" render={(props) => <MyRooms {...props} user={this.state.user} />} />
             <Route path="/" render={(props) => <Main {...props} user={this.state.user} updateUser={this.updateUserData} />} />
           </Switch>
         </div>
       </Router>
     );
-  } 
+  }
 }
 
 export default App;

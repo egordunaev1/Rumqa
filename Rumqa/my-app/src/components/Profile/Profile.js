@@ -99,9 +99,9 @@ class Profile extends Component {
                           <li className="nav-item" onClick={() => this.props.update_pat(3)}>
                             <Link to={"/profile/" + Number.parseInt(this.props.match.params.id) + "/edit/"} className={"nav-link" + (this.props.active_tab === 3 ? ' active' : '')}>Редактировать</Link>
                           </li>
-                          : 
+                          :
                           <li>
-                            <Link to={"/chat/" + this.state.user_data.id} className="no-border">Чат</Link>
+                            <Link to={"/chat/" + this.state.user_data.id} className="no-border">Личные сообщения</Link>
                           </li>
                           }
                       </ul>
