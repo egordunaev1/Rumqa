@@ -454,18 +454,24 @@ def get_questions(request):
 def more_messages(request):
     # Получение данных
     data = json.loads(request.body)
-    room = Room.objects.get(pk=data['room'])
+    chat = Chat.objects.get(pk=data['chat'])
     last = data['last']
     last_message = data['last_message']
+    room = chat.room
+    user = request.user
+
+    if not room or room.id != 19 and not user:
+        return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
 
     # Проверка доступа
-    if room.id != 19 and not request.user:
-        return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
-    if room.id != 19 and not request.user in room.admin_list.all() and not request.user in room.allowed_users.all():
+    if room and room.id != 19 and not user in room.admin_list.all() and not user in room.allowed_users.all():
         return Response(b'', status=status.HTTP_403_FORBIDDEN)
+    if not room and chat.first_user != user and chat.second_user != user:
+        return Response(b'', status=status.HTTP_403_FORBIDDEN)
+
     ind = 0
     fnd = False
-    messages = ChatMessage.objects.filter(chat=room.chat).order_by('-pk')[:1000]
+    messages = ChatMessage.objects.filter(chat=chat).order_by('-pk')[:1000]
     if last_message == -1 and last:
         messages = messages[:15]
         fnd = True
