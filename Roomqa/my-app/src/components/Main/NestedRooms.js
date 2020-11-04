@@ -20,8 +20,8 @@ function NRTopPanel(props) {
     <div className="container-fluid bg-primary text-white p-1 no-bb">
       <div className="row no-gutters">
         <div className="col-3">Название</div>
-        <div className="col-6 col-md-8 before-sep">Описание</div>
-        <div className="col-3 col-md-1 before-sep">Участники</div>
+        <div className="col-6 col-md-7 col-lg-8 before-sep">Описание</div>
+        <div className="col-3 col-md-2 col-lg-1 before-sep">Участники</div>
       </div>
     </div>
   )
@@ -32,8 +32,8 @@ function NestedRoom(props) {
   return (
     <div className="row no-gutters nested_room nested_room_bb p-1">
       <div className="col-3 nested_room_name">{room.name}</div>
-      <div className="col-6 col-md-8 pl-5px to-el">{room.description}</div>
-      <div className="col-3 col-md-1"><center>{room.allowed_users.length + room.admin_list.length}</center></div>
+      <div className="col-6 col-md-7 col-lg-8 pl-5px to-el">{room.description}</div>
+      <div className="col-3 col-md-2 col-lg-1"><center>{room.allowed_users.length + room.admin_list.length}</center></div>
     </div>
   )
 }
