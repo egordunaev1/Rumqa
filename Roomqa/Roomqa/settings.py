@@ -25,7 +25,7 @@ SECRET_KEY = 'i!ef-#k28ty3x&*y-)f4#%#*1&%c63dquhl5+$sf7&8(6v2ugy'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['194.58.102.76']
+ALLOWED_HOSTS = ['194.58.102.76', 'rumqa.ru', 'http://rumqa.ru:3000']
 
 import os
 import datetime
@@ -60,6 +60,8 @@ MESSAGE_TYPES_LIST = getattr(settings, 'MESSAGE_TYPES_LIST',
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
+    'rest_framework',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -70,9 +72,6 @@ INSTALLED_APPS = [
 ] + [
     'rooms',
     'users',
-] + [
-    'rest_framework',
-    'corsheaders',
 ]
 
 # Channels
@@ -189,10 +188,12 @@ REST_FRAMEWORK = {
 
 # cors-headers
 
-CORS_ORIGIN_WHITELIST = (
-    'http://194.58.102.76',
-    'http://194.58.102.76:3000',
-)
+CORS_ORIGIN_WHITELIST = [
+    "http://rumqa.ru",
+    "http://rumqa.ru:3000",
+    "http://194.58.102.76:3000",
+    "http://194.58.102.76",
+]
 
 
 # media
