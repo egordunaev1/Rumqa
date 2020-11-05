@@ -6,7 +6,7 @@ from django.dispatch import receiver
 import datetime
 
 class Notification(models.Model):
-    user = models.ForeignKey('User', related_name='notifications', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='notifications', on_delete=models.CASCADE)
     n_type = models.IntegerField()
     title = models.CharField(max_length=50)
     content = models.TextField()
