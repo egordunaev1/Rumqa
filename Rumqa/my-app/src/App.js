@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import { getCookie, deleteCookie, setCookie } from './cookieOperations';
 import { getBackend } from './utility';
+import Wrapper from './components/Main/Wrapper';
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +22,9 @@ class App extends Component {
       logged_in: false,
       user: null,
       profile_active_tab: 1,
-      notifications: []
+      notifications: [],
+      is_loading: true,
+      error: null
     };
     this.updateUserData = this.updateUserData.bind(this);
     this.update_pat = this.update_pat.bind(this);
@@ -44,18 +47,19 @@ class App extends Component {
         .then(response => {
           if (response.status !== 200) {
             deleteCookie('token');
-            this.setState({ logged_in: false, user: null });
+            this.setState({ logged_in: false, user: null, is_loading: false, error: response.status });
           }
           else {
             response.json()
               .then(res => this.setState({
                 user: res,
-                logged_in: true
+                logged_in: true,
+                is_loading: false
               }));
           }
         }
         )
-    }
+    } else this.setState({is_loading: false, logged_in: false});
   }
 
   getNotifications() {
@@ -111,17 +115,19 @@ class App extends Component {
             handle_logout={this.handle_logout}
             update_pat={this.update_pat}
             notifications={this.state.notifications}
-            />
-          <Switch>
-            <Route exact path="/registration" render={(props) => <Reg {...props} updateUser={this.updateUserData} handle_signup={this.handle_signup} logged_in={this.state.logged_in} />} />
-            <Route path="/profile/:id?" render={(props) => <Profile {...props} user={this.state.user} updateUser={this.updateUserData} update_pat={this.update_pat} active_tab={this.state.profile_active_tab} />} />
-            <Route path="/chat/redirect/:user_id?" render={(props) => <PrivateChat {...props} user={this.state.user} redirected={false} />} />
-            <Route path="/chat/:chat_id?" render={(props) => <PrivateChat {...props} redirected={true} user={this.state.user} private={true} />} />
-            <Route exact path="/" render={(props) => <MyRooms {...props} user={this.state.user} />} />
-            <Route path="/" render={(props) => <Main {...props} user={this.state.user} updateUser={this.updateUserData} />} />
-          </Switch>
+          />
+          <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
+            <Switch>
+              <Route exact path="/registration" render={(props) => <Reg {...props} updateUser={this.updateUserData} handle_signup={this.handle_signup} logged_in={this.state.logged_in} />} />
+              <Route path="/profile/:id?" render={(props) => <Profile {...props} user={this.state.user} updateUser={this.updateUserData} update_pat={this.update_pat} active_tab={this.state.profile_active_tab} />} />
+              <Route path="/chat/redirect/:user_id?" render={(props) => <PrivateChat {...props} user={this.state.user} redirected={false} />} />
+              <Route path="/chat/:chat_id?" render={(props) => <PrivateChat {...props} redirected={true} user={this.state.user} private={true} />} />
+              <Route exact path="/" render={(props) => <MyRooms {...props} user={this.state.user} />} />
+              <Route path="/" render={(props) => <Main {...props} user={this.state.user} updateUser={this.updateUserData} />} />
+            </Switch>
+          </Wrapper>
         </div>
-      </Router>
+      </Router >
     );
   }
 }
