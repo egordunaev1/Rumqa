@@ -66,11 +66,15 @@ def create_chatmessage(sender, instance, created, **kwargs):
     if created:
         chat = instance.chat
         room = chat.room
+        if room:
+            link_to = room.path
+        else:
+            link_to = f'/chat/{chat.id}'
         content = {
             'title': f'Новое сообщение',
-            'content1': f'В комнате ',
-            'link_to': room.path,
-            'link_text': room.name,
+            'content1': f'В чате ',
+            'link_to': link_to,
+            'link_text': f'{chat.first_user}-{chat.second_user}',
             'content2': ' есть новые сообщения',
             'n_type': NOTIF_ROOM_CHAT_NEW_MESSAGE,
             'chat': chat.id
