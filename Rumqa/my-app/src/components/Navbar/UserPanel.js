@@ -61,8 +61,8 @@ class UserPanel extends React.Component {
   render() {
     if (this.props.logged_in)
       return (
-        <div id="navbar-profile-panel" className="d-flex">
-          <div ref={this.wrapper_notif}>
+        <div id="navbar-profile-panel">
+          <div ref={this.wrapper_notif} className="d-flex" style={{height: 50+'px'}}>
             <img src={getBackend() + '/media/images/icons/' + (this.props.notifications.length ? 'notif_new.png' : 'notif.png')}
               width="40px" height="40px"
               className="cursor-pointer my-auto mr-2"
