@@ -77,7 +77,7 @@ class PrivateChat extends Component {
       )
     return (
       <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
-        <Redirect to={'/chat/' + chat.chat_id} />
+        <Redirect to={'/chat/' + this.props.chat} />
       </Wrapper>
     )
   }
