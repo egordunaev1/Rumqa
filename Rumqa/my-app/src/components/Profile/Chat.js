@@ -17,7 +17,28 @@ class PrivateChat extends Component {
   }
 
   componentDidMount() {
-    this.get_personal_chat();
+    if (this.props.redirected)
+      this.get_personal_chat();
+    else
+      this.getInterlocutor();
+  }
+
+  getInterlocutor = () => {
+    fetch(getBackend() + '/interlocutor/' + this.props.chat, {
+      method: 'GET',
+      headers: {
+        Authorization: `JWT ${getCookie('token')}`
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        res.json().then(res => {
+          this.setState({ interlocutor: res, is_loading: false });
+        });
+      } else {
+        this.setError(res.status);
+      }
+    }
+    )
   }
 
   get_personal_chat = () => {
@@ -34,10 +55,9 @@ class PrivateChat extends Component {
         Authorization: `JWT ${getCookie('token')}`
       }
     }).then(res => {
-      if (res.status === 200) 
-        res.json().then((json) => this.setState({ 
-          chat_id: json.chat_id,
-          interlocutor: json.interlocutor,
+      if (res.status === 200)
+        res.json().then((json) => this.setState({
+          chat_id: json,
           is_loading: false
         }));
       else this.setError(res.status);
@@ -49,9 +69,15 @@ class PrivateChat extends Component {
   }
 
   render() {
+    if (this.props.redirected)
+      return (
+        <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
+          <Chat user={this.props.user} chat={this.state.chat_id} setError={this.setError} interlocutor={this.state.interlocutor} />
+        </Wrapper>
+      )
     return (
       <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
-        <Redirect to={"/chat/" + this.state.chat_id}/>
+        <Redirect to={'/chat/' + chat.chat_id} />
       </Wrapper>
     )
   }

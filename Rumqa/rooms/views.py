@@ -375,7 +375,26 @@ def get_private_chat(request, user_id):
         chat.save()
 
     # Ответ
-    return Response({'interlocutor': FriendSerializer(interlocutor).data, 'chat_id': chat.id }, status=status.HTTP_200_OK)
+    return Response(chat.id, status=status.HTTP_200_OK)
+
+def get_interlocutor(request, chat_id):
+    if not request.user.is_authenticated:
+        return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
+
+    # Получение данных из запроса
+    try:
+        user = request.user
+        chat = Chat.objects.get(pk=chat_id)
+    except:
+        return Response(b'', status=status.HTTP_400_BAD_REQUEST)
+
+    if user == chat.first_user:
+        interlocutor = chat.second_user
+    elif user == chat.second_user:
+        interlocutor = chat.first_user
+    else:
+        return Response(b'', status=status.HTTP_400_BAD_REQUEST)
+    return Response(FriendSerializer(interlocutor).data, status=status.HTTP_200_OK)
 
 # Изменение статуса участника комнаты (админ, обычный)
 @api_view(['POST'])

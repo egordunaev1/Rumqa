@@ -116,7 +116,7 @@ class App extends Component {
             <Route exact path="/registration" render={(props) => <Reg {...props} updateUser={this.updateUserData} handle_signup={this.handle_signup} logged_in={this.state.logged_in} />} />
             <Route path="/profile/:id?" render={(props) => <Profile {...props} user={this.state.user} updateUser={this.updateUserData} update_pat={this.update_pat} active_tab={this.state.profile_active_tab} />} />
             <Route path="/chat/redirect/:user_id?" render={(props) => <PrivateChat {...props} user={this.state.user} />} />
-            <Route path="/chat/:chat_id?" render={(props) => <PrivateChat {...props} user={this.state.user} />} />
+            <Route path="/chat/:chat_id?" render={(props) => <PrivateChat chat={props['chat_id']} user={this.state.user} private={true} />} />
             <Route exact path="/" render={(props) => <MyRooms {...props} user={this.state.user} />} />
             <Route path="/" render={(props) => <Main {...props} user={this.state.user} updateUser={this.updateUserData} />} />
           </Switch>

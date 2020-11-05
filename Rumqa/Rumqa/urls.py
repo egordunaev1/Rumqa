@@ -35,6 +35,7 @@ urlpatterns = [
     re_path(r'^upload_code/$', upload_code),
     re_path(r'^send_message/$', send_message),
     re_path(r'^change_status/$', change_status),
+    re_path(r'^interlocutor/(?P<chat_id>\d+)$', get_interlocutor),
     re_path(r'^choose_best/$', choose_best),
     re_path(r'^more_messages/$', more_messages),
     re_path(r'^my_rooms/$', my_rooms),
