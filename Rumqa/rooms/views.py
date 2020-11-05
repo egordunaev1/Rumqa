@@ -351,15 +351,14 @@ def send_message(request):
     return Response(resp, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-def get_private_chat(request):
+def get_private_chat(request, user_id):
     if not request.user.is_authenticated:
         return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
 
     # Получение данных из запроса
-    data = json.loads(request.body)
     try:
         user = request.user
-        interlocutor = data['interlocutor']
+        interlocutor = User.objects.get(pk=user_id)
     except:
         return Response(b'', status=status.HTTP_400_BAD_REQUEST)
 

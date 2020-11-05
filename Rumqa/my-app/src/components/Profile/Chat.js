@@ -26,17 +26,14 @@ class PrivateChat extends Component {
       this.setState({ error: 404 });
       return;
     }
-    fetch(getBackend() + '/get_private_chat/', {
-      method: 'POST',
+    fetch(getBackend() + '/get_private_chat/' + interlocutor, {
+      method: 'GET',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
-      },
-      body: JSON.stringify({
-        interlocutor: interlocutor
-      })
+      }
     }).then(res => {
       if (res.status === 200) 
-        res.json().then((res) => this.setState({ chat_id: res }));
+        res.json().then((res) => this.setState({ chat_id: res, is_loading: false }));
       else this.setError(res.status);
     })
   }
