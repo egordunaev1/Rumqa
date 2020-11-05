@@ -18,11 +18,17 @@ class UserPanel extends React.Component {
   }
 
   addOutsideClickListener = which => {
-    document.addEventListener('click', (which === 1 ? this.handleDocumentClick1 : this.handleDocumentClick2));
+    if (which === 1)
+      document.addEventListener('click', this.handleDocumentClick1);
+    else
+      document.addEventListener('click', this.handleDocumentClick2);
   }
 
   removeOutsideClickListener = which => {
-    document.removeEventListener('click', (which === 1 ? this.handleDocumentClick1 : this.handleDocumentClick2));
+    if (which === 1)
+      document.addEventListener('click', this.handleDocumentClick1);
+    else
+      document.addEventListener('click', this.handleDocumentClick2);
   }
 
   onShow = which => {
