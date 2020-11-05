@@ -17,7 +17,6 @@ class PrivateChat extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     if (this.props.redirected)
       this.getInterlocutor();
     else
@@ -40,6 +39,7 @@ class PrivateChat extends Component {
     }).then(res => {
       if (res.status === 200) {
         res.json().then(res => {
+          console.log(interlocutor);
           this.setState({ interlocutor: res, is_loading: false, chat_id: chat_id });
         });
       } else {
