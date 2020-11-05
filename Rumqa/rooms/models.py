@@ -78,7 +78,6 @@ def create_chatmessage(sender, instance, created, **kwargs):
             'content2': ' есть новые сообщения',
             'n_type': NOTIF_ROOM_CHAT_NEW_MESSAGE,
             'chat': chat.id,
-            'user': instance.sender
         }
         if not room:
             content['n_type'] = NOTIF_PRIVATE_CHAT_NEW_MESSAGE
