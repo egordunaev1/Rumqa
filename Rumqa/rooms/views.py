@@ -262,7 +262,6 @@ def upload_code(request):
     # Форматирование
     code = highlight(code, lexer, formatter)
     css = formatter.get_style_defs().replace('source ', '')
-    print(css)
     # Ответ
     return Response({
         'code': code,
@@ -282,7 +281,6 @@ def send_message(request):
     user = request.user
     data = json.loads(request.body)
     chat = data['chat']
-    print(data['chat'])
     raw_message = data['struct']
     q_t = data['type']  # Тип сообщения (question, message, answer)
     title = data.get('title', '')
@@ -383,20 +381,17 @@ def get_interlocutor(request, chat_id):
         return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
 
     # Получение данных из запроса
-    print(0)
     try:
         user = request.user
         chat = Chat.objects.get(pk=chat_id)
     except:
         return Response(b'', status=status.HTTP_400_BAD_REQUEST)
-    print(1)
     if user == chat.first_user:
         interlocutor = chat.second_user
     elif user == chat.second_user:
         interlocutor = chat.first_user
     else:
         return Response(b'', status=status.HTTP_400_BAD_REQUEST)
-    print(interlocutor)
     return Response(FriendSerializer(interlocutor).data, status=status.HTTP_200_OK)
 
 # Изменение статуса участника комнаты (админ, обычный)
@@ -512,6 +507,7 @@ def more_messages(request):
     last_message = data['last_message']
     room = chat.room
     user = request.user
+    print(chat, type(chat))
 
     if room and room.id != 19 and not user:
         return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
