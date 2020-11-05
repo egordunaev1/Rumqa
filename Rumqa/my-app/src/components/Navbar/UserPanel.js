@@ -77,6 +77,7 @@ class UserPanel extends React.Component {
   }
 
   render() {
+    console.log(this.props.notifications);
     if (this.props.logged_in)
       return (
         <div id="navbar-profile-panel" className="d-flex">
