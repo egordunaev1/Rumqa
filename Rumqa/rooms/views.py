@@ -372,7 +372,7 @@ def get_private_chat(request, user_id):
         chat.save()
 
     # Ответ
-    return Response({'interlocutor': interlocutor, 'chat_id': chat.id }, status=status.HTTP_200_OK)
+    return Response({'interlocutor': FriendSerializer(interlocutor).data, 'chat_id': chat.id }, status=status.HTTP_200_OK)
 
 # Изменение статуса участника комнаты (админ, обычный)
 @api_view(['POST'])

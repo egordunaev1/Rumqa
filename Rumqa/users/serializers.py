@@ -12,7 +12,7 @@ class FriendProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('first_name', 'last_name', 'cover', 'status')
+        fields = ('id', 'first_name', 'last_name', 'cover', 'status')
 
 
 class FriendSerializer(serializers.ModelSerializer):
