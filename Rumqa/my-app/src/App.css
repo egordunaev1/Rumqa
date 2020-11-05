@@ -213,6 +213,7 @@ a {
     border: 1px solid #ddd;
     border-radius: 5px;
     z-index: 100;
+    max-width: 300px;
 }
 
 .nav-profile-sep {
