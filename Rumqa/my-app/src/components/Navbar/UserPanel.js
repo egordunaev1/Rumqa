@@ -34,17 +34,28 @@ class UserPanel extends React.Component {
     this.removeOutsideClickListener(which);
   }
 
-  onClickOutside() {
-    this.setState({ hidden: true });
+  onClickOutside(which) {
+    if (which === 1)
+      this.setState({ hidden: true });
+    else
+      this.setState({ hidden_notif: true });
   }
 
-  handleDocumentClick = (e, w) => {
-    let _w = (w === 1 ? this.wrapper : this.wrapper_notif);
+  firstHandler = e => {
+    let _w = this.wrapper;
     if (_w.current && !_w.current.contains(e.target)) {
-      this.onClickOutside();
+      this.onClickOutside(which);
       console.log(123);
     }
   };
+
+  secondHandler = e => {
+    let _w = this.wrapper;
+    if (_w.current && !_w.current.contains(e.target)) {
+      this.onClickOutside(which);
+      console.log(234);
+    }
+  }
 
   handleProfileHidden() {
     let hidden = this.state.hidden;
