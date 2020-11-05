@@ -93,7 +93,7 @@ class UserPanel extends React.Component {
                     <Interweave content={notif.content} />
                     <div className="nav-profile-sep mx-auto" />
                   </div>
-                )
+                ))
               }
             </div>
           </div>
