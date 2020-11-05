@@ -77,24 +77,25 @@ def create_chatmessage(sender, instance, created, **kwargs):
             'link_text': f'{chat.first_user}-{chat.second_user}',
             'content2': ' есть новые сообщения',
             'n_type': NOTIF_ROOM_CHAT_NEW_MESSAGE,
-            'chat': chat.id
+            'chat': chat.id,
+            'user': instance.sender
         }
         if not room:
             content['n_type'] = NOTIF_PRIVATE_CHAT_NEW_MESSAGE
             if chat.first_user.id != instance.sender.id:
-                delete_same_notifs(chat.first_user.id, content['content'])
+                delete_same_notifs(chat.first_user.id, content['chat'])
                 Notification(user=chat.first_user, **content).save()
             else:
-                delete_same_notifs(chat.second_user, content['content'])
+                delete_same_notifs(chat.second_user, content['chat'])
                 Notification(user=second_user, **content).save()
         else:
             for user in room.admin_list.all():
                 if user.id != instance.sender.id:
-                    delete_same_notifs(user, content['content'])
+                    delete_same_notifs(user, content['chat'])
                     Notification(user=user, **content).save()
             for user in room.allowed_users.all():
                 if user.id != instance.sender.id:
-                    delete_same_notifs(user, content['content'])
+                    delete_same_notifs(user, content['chat'])
                     Notification(user=user, **content).save()
 
 
@@ -135,7 +136,7 @@ def create_answer(sender, instance, created, **kwargs):
             'question': question.id,
             'user': user
         }
-        delete_same_notifs(user, content['content'])
+        delete_same_notifs(user, content['question'])
         Notification(**content).save()
 
 

@@ -319,7 +319,7 @@ def update_friend_list(request, id):
                     'friend': user.id,
                     'user': friend
                 }
-                for u in Notification.objects.filter(n_type=NOTIF_FRIEND_REQUEST, user=user):
+                for u in Notification.objects.filter(user=user, friend=friend.id):
                     u.delete()
                 Notification(**content).save()
             elif data['request'] == 'deny':
@@ -335,7 +335,7 @@ def update_friend_list(request, id):
                     'friend': user.id,
                     'user': friend
                 }
-                for u in Notification.objects.filter(n_type=NOTIF_FRIEND_REQUEST, user=user):
+                for u in Notification.objects.filter(friend=friend.id, user=user):
                     u.delete()
                 Notification(**content).save()
             else:
