@@ -18,13 +18,20 @@ class PrivateChat extends Component {
 
   componentDidMount() {
     if (this.props.redirected)
-      this.get_personal_chat();
-    else
       this.getInterlocutor();
+    else
+      this.get_personal_chat();
   }
 
   getInterlocutor = () => {
-    fetch(getBackend() + '/interlocutor/' + this.props.chat, {
+    var chat_id;
+    try {
+      chat_id = Number.parseInt(this.props.match.params.chat_id);
+    } catch (err) {
+      this.setState({ error: 404 });
+      return;
+    }
+    fetch(getBackend() + '/interlocutor/' + chat_id, {
       method: 'GET',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
@@ -77,7 +84,7 @@ class PrivateChat extends Component {
       )
     return (
       <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
-        <Redirect to={'/chat/' + this.props.chat} />
+        <Redirect to={'/chat/' + this.state.chat_id} />
       </Wrapper>
     )
   }
