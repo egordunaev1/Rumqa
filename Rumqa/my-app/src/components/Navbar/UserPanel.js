@@ -41,21 +41,13 @@ class UserPanel extends React.Component {
       this.setState({ hidden_notif: true });
   }
 
-  firstHandler = e => {
-    let _w = this.wrapper;
+  handleDocumentClick = (e, which) => {
+    let _w = (which === 1 ? this.wrapper : this.wrapper_notif);
     if (_w.current && !_w.current.contains(e.target)) {
       this.onClickOutside(which);
-      console.log(123);
+      console.log(which);
     }
   };
-
-  secondHandler = e => {
-    let _w = this.wrapper;
-    if (_w.current && !_w.current.contains(e.target)) {
-      this.onClickOutside(which);
-      console.log(234);
-    }
-  }
 
   handleProfileHidden() {
     let hidden = this.state.hidden;
@@ -77,7 +69,7 @@ class UserPanel extends React.Component {
             <img src={getBackend() + '/media/images/icons/' + (this.props.notifications.length ? 'notif_new.png' : 'notif.png')}
               width="40px" height="40px"
               className="cursor-pointer my-auto mr-2"
-              onClick={() => console.log(123)}
+              onClick={onClick}
             />
           </div>
           <div ref={this.wrapper}>
