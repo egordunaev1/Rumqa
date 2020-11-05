@@ -485,7 +485,7 @@ def more_messages(request):
     room = chat.room
     user = request.user
 
-    if not room or room.id != 19 and not user:
+    if room and room.id != 19 and not user:
         return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
 
     # Проверка доступа
