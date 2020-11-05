@@ -91,11 +91,11 @@ class UserPanel extends React.Component {
               {
                 this.props.notifications.map((notif, ind) => (
                   <div className="p-2">
-                    <div className="nav-profile-item">{notif.title}</div>
+                    <div className="text-bold">{notif.title}</div>
                     <div className="nav-profile-sep mx-auto" />
                     {notif.content1}
                     <Link to={notif.link_to}>
-                      {notif.link_text}
+                      <span className="text-bold text-black">{notif.link_text}</span>
                     </Link>
                     {notif.content2}
                     <div className="nav-profile-sep mx-auto" />

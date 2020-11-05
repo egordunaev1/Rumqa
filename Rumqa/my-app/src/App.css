@@ -204,6 +204,10 @@ a {
     z-index: 100;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
 #nav-notif {
     padding: 3px 0;
     position: absolute;
@@ -214,6 +218,14 @@ a {
     border-radius: 5px;
     z-index: 100;
     max-width: 300px;
+}
+
+.nav-notif-item {
+    padding: 3px 3px;
+    display: block;
+    cursor: pointer;
+    color: black;
+    outline: none;
 }
 
 .nav-profile-sep {
