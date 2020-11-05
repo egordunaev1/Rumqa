@@ -44,7 +44,7 @@ class PrivateChat extends Component {
       if (res.status === 200) {
         res.json().then(res => {
           console.log(res);
-          this.setState({ interlocutor: res, chat_id: chat_id, redirected: true});
+          this.setState({ interlocutor: res, is_loading: false, chat_id: chat_id, redirected: true});
         });
       } else {
         this.setError(res.status);
@@ -69,8 +69,7 @@ class PrivateChat extends Component {
     }).then(res => {
       if (res.status === 200)
         res.json().then((json) => this.setState({
-          chat_id: json,
-          is_loading: false
+          chat_id: json
         }));
       else this.setError(res.status);
     })
@@ -81,8 +80,8 @@ class PrivateChat extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.is_loading)
-      this.getInterlocutor();
+    if (!this.state.interlocutor && this.state.redirected)
+      this.getInterlocutor(); 
   }
 
   render() {
