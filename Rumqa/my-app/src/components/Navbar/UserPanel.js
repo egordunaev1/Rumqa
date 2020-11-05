@@ -44,6 +44,7 @@ class UserPanel extends React.Component {
       this.setState({ hidden: true });
     else
       this.setState({ hidden_notif: true });
+    this.onHide(which);
   }
 
   handleDocumentClick1 = (e) => {
