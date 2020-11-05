@@ -69,7 +69,7 @@ class UserPanel extends React.Component {
             <img src={getBackend() + '/media/images/icons/' + (this.props.notifications.length ? 'notif_new.png' : 'notif.png')}
               width="40px" height="40px"
               className="cursor-pointer my-auto mr-2"
-              onClick={onClick}
+              onClick={this.handleNotifHidden}
             />
           </div>
           <div ref={this.wrapper}>
