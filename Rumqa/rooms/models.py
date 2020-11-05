@@ -10,7 +10,7 @@ from users.models import Notification
 
 
 def delete_same_notifs(user, content):
-    for n in user.profile.notifications.all():
+    for n in user.notifications.all():
         n.delete()
 
 #<------------------------------ Base Models ------------------------------>#
