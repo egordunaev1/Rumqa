@@ -387,13 +387,14 @@ def get_interlocutor(request, chat_id):
         chat = Chat.objects.get(pk=chat_id)
     except:
         return Response(b'', status=status.HTTP_400_BAD_REQUEST)
-
+    print(1)
     if user == chat.first_user:
         interlocutor = chat.second_user
     elif user == chat.second_user:
         interlocutor = chat.first_user
     else:
         return Response(b'', status=status.HTTP_400_BAD_REQUEST)
+    print(interlocutor)
     return Response(FriendSerializer(interlocutor).data, status=status.HTTP_200_OK)
 
 # Изменение статуса участника комнаты (админ, обычный)
