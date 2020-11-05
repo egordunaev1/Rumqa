@@ -17,7 +17,7 @@ class PrivateChat extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.redirected);
+    console.log(this.props);
     if (this.props.redirected)
       this.getInterlocutor();
     else
@@ -77,6 +77,7 @@ class PrivateChat extends Component {
   }
 
   render() {
+    console.log(this.props.redirected);
     if (this.props.redirected)
       return (
         <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
