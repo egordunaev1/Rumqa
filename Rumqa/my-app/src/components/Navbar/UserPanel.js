@@ -91,9 +91,9 @@ class UserPanel extends React.Component {
               {
                 this.props.notifications.map((notif, ind) => (
                   <div>
-                    <div className="nav-profile-item">{norif.title}</div>
+                    <div className="nav-profile-item">{notif.title}</div>
                     <div className="nav-profile-sep mx-auto" />
-                    <Interweave disableFilters content={norif.content}/>
+                    <Interweave disableFilters content={notif.content}/>
                   </div>
                 ))
               }
