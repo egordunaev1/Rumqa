@@ -52,27 +52,29 @@ class UserPanel extends React.Component {
   render() {
     if (this.props.logged_in)
       return (
-        <div id="navbar-profile-panel" ref={this.wrapper} className="d-flex">
-          <img src={getBackend() + '/media/images/icons/' + (this.props.notifications.length ? 'notif_new.png' : 'notif.png')} 
+        <div id="navbar-profile-panel" className="d-flex">
+          <img src={getBackend() + '/media/images/icons/' + (this.props.notifications.length ? 'notif_new.png' : 'notif.png')}
             width="40px" height="40px"
             className="cursor-pointer my-auto mr-2"
             onClick={() => console.log(123)}
-            />
-          <div onClick={this.handleProfileHidden} id="logged-in-nav-panel">
-            <div className="my-auto" id="navbar-username">{this.props.user.username}</div>
-            <img alt=""  className="my-auto cover-img"  src={getBackend() + this.props.user.profile.cover} height="32px" width="32px" />
-          </div>
-          <div className={this.state.hidden ? 'hidden' : ''} id="nav-profile">
-            <Link to={'/profile/' + this.props.user.id} className="nav-profile-item" id="nav-profile-name" onClick={() => this.props.update_pat(1)}>
-              <img alt=""  className="my-auto cover-img"  src={getBackend() + this.props.user.profile.cover} height="32px" width="32px" />
-              <div className="">{this.props.user.profile.first_name + ' ' + this.props.user.profile.last_name}</div>
-            </Link>
-            <div className="nav-profile-sep mx-auto" />
-            <Link to={'/'} className="nav-profile-item">Мои комнаты</Link>
-            <Link to={'/profile/' + this.props.user.id + '/friends'} className="nav-profile-item" onClick={() => this.props.update_pat(2)}>Друзья</Link>
-            <Link to={'/profile/' + this.props.user.id + '/edit'} className="nav-profile-item" onClick={() => this.props.update_pat(3)}>Редактировать</Link>
-            <div className="nav-profile-sep mx-auto" />
-            <Link to="/Main" className="nav-profile-item" onClick={() => { this.handleProfileHidden(); this.props.handle_logout(); }} >Выйти</Link>
+          />
+          <div ref={this.wrapper}>
+            <div onClick={this.handleProfileHidden} id="logged-in-nav-panel">
+              <div className="my-auto" id="navbar-username">{this.props.user.username}</div>
+              <img alt="" className="my-auto cover-img" src={getBackend() + this.props.user.profile.cover} height="32px" width="32px" />
+            </div>
+            <div className={this.state.hidden ? 'hidden' : ''} id="nav-profile">
+              <Link to={'/profile/' + this.props.user.id} className="nav-profile-item" id="nav-profile-name" onClick={() => this.props.update_pat(1)}>
+                <img alt="" className="my-auto cover-img" src={getBackend() + this.props.user.profile.cover} height="32px" width="32px" />
+                <div className="">{this.props.user.profile.first_name + ' ' + this.props.user.profile.last_name}</div>
+              </Link>
+              <div className="nav-profile-sep mx-auto" />
+              <Link to={'/'} className="nav-profile-item">Мои комнаты</Link>
+              <Link to={'/profile/' + this.props.user.id + '/friends'} className="nav-profile-item" onClick={() => this.props.update_pat(2)}>Друзья</Link>
+              <Link to={'/profile/' + this.props.user.id + '/edit'} className="nav-profile-item" onClick={() => this.props.update_pat(3)}>Редактировать</Link>
+              <div className="nav-profile-sep mx-auto" />
+              <Link to="/Main" className="nav-profile-item" onClick={() => { this.handleProfileHidden(); this.props.handle_logout(); }} >Выйти</Link>
+            </div>
           </div>
         </div>
       )
