@@ -90,7 +90,7 @@ class PrivateChat extends Component {
       )
     else {
       if (!this.state.is_loading && !this.state.error)
-        return <Redirect to={'/chat/' + this.chat_id} />;
+        return <Redirect to={'/chat/' + this.state.chat_id} />;
       return <Wrapper is_loading={this.state.is_loading} error={this.state.error}></Wrapper>
     }
   }
