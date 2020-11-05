@@ -28,7 +28,7 @@ urlpatterns = [
     re_path(r'^user_data/(?P<id>\d+)/$', user_data),
     re_path(r'^room_data/', room_data),
     re_path(r'^nested_rooms/(?P<id>\d+)/', nested_rooms),
-    re_path(r'^private_chat/(?P<id>\d+)/$', get_private_chat),
+    re_path(r'^private_chat/(?P<user_id>\d+)/$', get_private_chat),
     re_path(r'^get_questions/', get_questions),
     re_path(r'^create_room/$', create_Room),
     re_path(r'^upload_image/$', upload_image),
