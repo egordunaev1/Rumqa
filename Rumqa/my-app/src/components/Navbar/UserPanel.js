@@ -91,7 +91,7 @@ class UserPanel extends React.Component {
               {
                 this.props.notifications.map((notif, ind) => (
                   <div>
-                    <Markup content="HeLoMama<div>A</div>" />
+                    <Interweave content='HeLoMama<Link to="">A</Link>' />
                     <div className="nav-profile-sep mx-auto" />
                   </div>
                 ))
