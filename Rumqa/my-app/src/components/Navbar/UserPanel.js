@@ -8,56 +8,67 @@ import { getBackend } from '../../utility';
 class UserPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hidden: true }
+    this.state = { hidden: true, hidden_notif: true }
     this.handleProfileHidden = this.handleProfileHidden.bind(this);
   }
   wrapper = React.createRef();
+  wrapper_notif = React.createRef();
 
   componentWillUnmount() {
     this.removeOutsideClickListener();
   }
 
-  addOutsideClickListener() {
-    document.addEventListener('click', this.handleDocumentClick);
+  addOutsideClickListener(which) {
+    document.addEventListener('click', (e) => this.handleDocumentClick(e, which));
   }
 
-  removeOutsideClickListener() {
-    document.removeEventListener('click', this.handleDocumentClick);
+  removeOutsideClickListener(which) {
+    document.removeEventListener('click', (e) => this.handleDocumentClick(e, which));
   }
 
-  onShow() {
-    this.addOutsideClickListener();
+  onShow(which) {
+    this.addOutsideClickListener(which);
   }
 
-  onHide() {
-    this.removeOutsideClickListener();
+  onHide(which) {
+    this.removeOutsideClickListener(which);
   }
 
   onClickOutside() {
     this.setState({ hidden: true });
   }
 
-  handleDocumentClick = e => {
-    if (this.wrapper.current && !this.wrapper.current.contains(e.target)) {
+  handleDocumentClick = (e, w) => {
+    let _w = (w === 1 ? this.wrapper : this.wrapper_notif);
+    if (_w.current && !_w.current.contains(e.target)) {
       this.onClickOutside();
+      console.log(123);
     }
   };
 
   handleProfileHidden() {
     let hidden = this.state.hidden;
-    !hidden ? this.onHide() : this.onShow();
+    !hidden ? this.onHide(1) : this.onShow(1);
     this.setState({ hidden: !hidden });
+  }
+
+  handleNotifHidden() {
+    let hidden = this.state.hidden_notif;
+    !hidden ? this.onHide(2) : this.onShow(2);
+    this.setState({ hidden_notif: !hidden });
   }
 
   render() {
     if (this.props.logged_in)
       return (
         <div id="navbar-profile-panel" className="d-flex">
-          <img src={getBackend() + '/media/images/icons/' + (this.props.notifications.length ? 'notif_new.png' : 'notif.png')}
-            width="40px" height="40px"
-            className="cursor-pointer my-auto mr-2"
-            onClick={() => console.log(123)}
-          />
+          <div ref={this.wrapper_notif}>
+            <img src={getBackend() + '/media/images/icons/' + (this.props.notifications.length ? 'notif_new.png' : 'notif.png')}
+              width="40px" height="40px"
+              className="cursor-pointer my-auto mr-2"
+              onClick={() => console.log(123)}
+            />
+          </div>
           <div ref={this.wrapper}>
             <div onClick={this.handleProfileHidden} id="logged-in-nav-panel">
               <div className="my-auto" id="navbar-username">{this.props.user.username}</div>
