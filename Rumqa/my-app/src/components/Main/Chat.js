@@ -9,7 +9,7 @@ function TopPanel(props) {
   var interlocutor = props.interlocutor;
   return (
     <div className="container-fluid bg-primary p-1 border-rounded-top chat-top-panel">
-      {interlocutor && <div className="text-white">{'Чат с ' + interlocutor.profile.first_name + ' ' + interlocutor.profile.last_name}</div>}
+      {interlocutor && <div className="text-white">Чат с <Link to={"/profile/" + interlocutor.id}>{interlocutor.profile.first_name + ' ' + interlocutor.profile.last_name}</Link></div>}
     </div>
   )
 }
