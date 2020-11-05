@@ -502,7 +502,6 @@ def get_questions(request):
 def more_messages(request):
     # Получение данных
     data = json.loads(request.body)
-    print(data['chat'], type(data['chat']))
     chat = Chat.objects.get(pk=data['chat'])
     last = data['last']
     last_message = data['last_message']
@@ -521,7 +520,7 @@ def more_messages(request):
     ind = 0
     fnd = False
     messages = ChatMessage.objects.filter(chat=chat).order_by('-pk')[:1000]
-    for n in Notification.objects.filter(user=user, n_type=NOTIF_ROOM_CHAT_NEW_MESSAGE):
+    for n in Notification.objects.filter(user=user, chat=chat.id):
         n.delete()
     if last_message == -1:
         if last:
