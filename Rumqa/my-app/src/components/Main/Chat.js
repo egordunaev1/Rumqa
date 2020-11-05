@@ -52,7 +52,7 @@ class Chat extends Component {
     this.getMessages();
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-    this.timerId = setInterval(() => { this.getMessages(false); }, 3000);
+    this.timerId = setInterval(() => { this.getMessages(false); }, 2000);
     if (this.new_message.current)
       this.new_message.current.addEventListener('resize', this.update_nm_height);
   }

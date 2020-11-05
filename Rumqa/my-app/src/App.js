@@ -73,7 +73,7 @@ class App extends Component {
 
   componentDidMount() {
     this.updateUserData();
-    this.timerId = setInterval(() => { this.getNotifications(false); }, 5000);
+    this.timerId = setInterval(() => { this.getNotifications(false); }, 2000);
   }
 
   componentWillUnmount() {

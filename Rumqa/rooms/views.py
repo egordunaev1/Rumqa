@@ -12,7 +12,8 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles, get_style_by_name
 from pygments.lexers import Python3Lexer
 
-from Rumqa.settings import NOTIF_ROOM_CHAT_NEW_MESSAGE
+from Rumqa.settings import NOTIF_ROOM_CHAT_NEW_MESSAGE,\
+                           NOTIF_NEW_ANSWER
 
 from .models import *
 from .serializers import *
@@ -449,7 +450,7 @@ def get_questions(request):
     # Получение данных из запроса
     user = request.user
     path = request.path.split('/')[1:]
-    many = (path[1] == "many")  # Запрос одной комнаты или целой страницы
+    many = (path[1] == "many")  # Запрос однго вопроса или целой страницы
     if many:
         room = Room.objects.get(pk=int(path[2]))
         page = int(path[3]) - 1
@@ -469,8 +470,11 @@ def get_questions(request):
                                                  page*10: page*10 + 10], many=True)
     else:
         try:
-            response = QuestionSerializer(
-                room.question_page.questions.get(pk=question))
+            question = room.question_page.questions.get(pk=question)
+            response = QuestionSerializer(question)
+            if user == question.creator:
+                for n in Notification.objects.filter(user=user, n_type=NOTIF_NEW_ANSWER):
+                    n.delete()
         except:
             return Response(b'', status=status.HTTP_404_NOT_FOUND)
     return Response(response.data, status=status.HTTP_200_OK)
