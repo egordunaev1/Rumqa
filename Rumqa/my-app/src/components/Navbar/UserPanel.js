@@ -4,7 +4,7 @@ import {
   Link
 } from "react-router-dom";
 import { getBackend } from '../../utility';
-import Interweave from 'interweave';
+import Interweave, {Markup} from 'interweave';
 
 class UserPanel extends React.Component {
   constructor(props) {
@@ -91,7 +91,7 @@ class UserPanel extends React.Component {
               {
                 this.props.notifications.map((notif, ind) => (
                   <div>
-                    <Interweave content={notif.content} />
+                    <Markup content={notif.content} />
                     <div className="nav-profile-sep mx-auto" />
                   </div>
                 ))
