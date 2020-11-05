@@ -39,7 +39,7 @@ class PrivateChat extends Component {
     }).then(res => {
       if (res.status === 200) {
         res.json().then(res => {
-          console.log(interlocutor);
+          console.log(res);
           this.setState({ interlocutor: res, is_loading: false, chat_id: chat_id });
         });
       } else {
