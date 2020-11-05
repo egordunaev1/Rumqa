@@ -9,10 +9,10 @@ class Notification(models.Model):
     user = models.ForeignKey(User, related_name='notifications', on_delete=models.CASCADE)
     n_type = models.IntegerField()
     title = models.CharField(max_length=50)
-    content1 = models.TextField()
-    link_text = models.TextField()
-    link_to = models.TextField()
-    content2 = models.TextField()
+    content1 = models.TextField(null=True)
+    link_text = models.TextField(null=True)
+    link_to = models.TextField(null=True)
+    content2 = models.TextField(null=True)
 
     # Связанные модели
     chat = models.IntegerField(null=True)
