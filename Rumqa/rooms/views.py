@@ -369,6 +369,7 @@ def get_private_chat(request, user_id):
         chat = chat[0]
     else:
         chat = Chat(first_user=user, second_user=interlocutor)
+        chat.save()
 
     # Ответ
     return Response(chat.id, status=status.HTTP_200_OK)
