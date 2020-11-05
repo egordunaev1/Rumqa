@@ -87,7 +87,7 @@ def create_chatmessage(sender, instance, created, **kwargs):
                 Notification(user=chat.first_user, **content).save()
             else:
                 delete_same_notifs(chat.second_user, content['chat'])
-                Notification(user=second_user, **content).save()
+                Notification(user=chat.second_user, **content).save()
         else:
             for user in room.admin_list.all():
                 if user.id != instance.sender.id:
