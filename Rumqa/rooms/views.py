@@ -497,9 +497,12 @@ def more_messages(request):
     ind = 0
     fnd = False
     messages = ChatMessage.objects.filter(chat=chat).order_by('-pk')[:1000]
-    if last_message == -1 and last:
-        messages = messages[:15]
-        fnd = True
+    if last_message == -1:
+        if last:
+            messages = messages[:15]
+            fnd = True
+        else:
+            return Response([], status=status.HTTP_200_OK)
     else:
         for mes in messages:
             if mes.id == last_message:
