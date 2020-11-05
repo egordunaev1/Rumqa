@@ -81,12 +81,21 @@ def create_chatmessage(sender, instance, created, **kwargs):
         }
         if not room:
             content['n_type'] = NOTIF_PRIVATE_CHAT_NEW_MESSAGE
-        for user in room.admin_list.all():
-            delete_same_notifs(user, content['content'])
-            Notification(user=user, **content).save()
-        for user in room.allowed_users.all():
-            delete_same_notifs(user, content['content'])
-            Notification(user=user, **content).save()
+            if chat.first_user.id != instance.creator.id:
+                delete_same_notifs(chat.first_user.id, content['content'])
+                Notification(user=chat.first_user, **content).save()
+            else:
+                delete_same_notifs(chat.second_user, content['content'])
+                Notification(user=second_user, **content).save()
+        else:
+            for user in room.admin_list.all():
+                if user.id != instance.creator.id:
+                    delete_same_notifs(user, content['content'])
+                    Notification(user=user, **content).save()
+            for user in room.allowed_users.all():
+                if user.id != instance.creator.id:
+                    delete_same_notifs(user, content['content'])
+                    Notification(user=user, **content).save()
 
 
 class Chat(models.Model):
