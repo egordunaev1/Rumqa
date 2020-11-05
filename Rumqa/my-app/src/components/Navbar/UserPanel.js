@@ -4,6 +4,7 @@ import {
   Link
 } from "react-router-dom";
 import { getBackend } from '../../utility';
+import Interweave from 'interweave';
 
 class UserPanel extends React.Component {
   constructor(props) {
@@ -79,23 +80,21 @@ class UserPanel extends React.Component {
     if (this.props.logged_in)
       return (
         <div id="navbar-profile-panel" className="d-flex">
-          <div ref={this.wrapper_notif} className="d-flex" style={{height: 50+'px'}}>
+          <div ref={this.wrapper_notif} className="d-flex" style={{ height: 50 + 'px' }}>
             <img src={getBackend() + '/media/images/icons/' + (this.props.notifications.length ? 'notif_new.png' : 'notif.png')}
               width="40px" height="40px"
               className="cursor-pointer my-auto mr-2"
               onClick={this.handleNotifHidden}
             />
             <div className={this.state.hidden_notif ? 'hidden' : ''} id="nav-notif">
-              <Link to={'/profile/' + this.props.user.id} className="nav-profile-item" id="nav-profile-name" onClick={() => this.props.update_pat(1)}>
-                <img alt="" className="my-auto cover-img" src={getBackend() + this.props.user.profile.cover} height="32px" width="32px" />
-                <div className="">{this.props.user.profile.first_name + ' ' + this.props.user.profile.last_name}</div>
-              </Link>
-              <div className="nav-profile-sep mx-auto" />
-              <Link to={'/'} className="nav-profile-item">Мои комнаты</Link>
-              <Link to={'/profile/' + this.props.user.id + '/friends'} className="nav-profile-item" onClick={() => this.props.update_pat(2)}>Друзья</Link>
-              <Link to={'/profile/' + this.props.user.id + '/edit'} className="nav-profile-item" onClick={() => this.props.update_pat(3)}>Редактировать</Link>
-              <div className="nav-profile-sep mx-auto" />
-              <Link to="/Main" className="nav-profile-item" onClick={() => { this.handleProfileHidden(); this.props.handle_logout(); }} >Выйти</Link>
+              {
+                this.props.notifications.map((notif, ind) => (
+                  <div>
+                    <Interweave content={notif.content} />
+                    <div className="nav-profile-sep mx-auto" />
+                  </div>
+                )
+              }
             </div>
           </div>
           <div ref={this.wrapper}>
