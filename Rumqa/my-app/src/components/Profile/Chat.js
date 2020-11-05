@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { getCookie } from '../../cookieOperations';
 import { getBackend } from '../../utility';
 import Chat from '../Main/Chat';
 import Wrapper from '../Main/Wrapper';
