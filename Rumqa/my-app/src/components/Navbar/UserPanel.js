@@ -77,29 +77,6 @@ class UserPanel extends React.Component {
   }
 
   render() {
-    const matcher = {
-      inverseName: 'noFoo',
-      propName: 'foo',
-      match(string) {
-        const result = string.match(/foo/);
-        if (!result) {
-          return null;
-        }
-        return {
-          index: result.index!,
-          length: result[0].length,
-          match: result[0],
-          extraProp: 'foo', // or result[1], etc
-          valid: true,
-        };
-      },
-      createElement(children, props) {
-        return <span {...props}>{children}</span>;
-      },
-      asTag() {
-        return 'span';
-      },
-    };
     console.log(this.props.notifications);
     if (this.props.logged_in)
       return (
