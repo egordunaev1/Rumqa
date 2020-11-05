@@ -8,12 +8,17 @@ from rest_framework.views import APIView
 from rest_framework import generics, viewsets
 from .serializers import *
 from rooms.serializers import NestedRoomSerializer
-from .models import Profile
+from .models import Profile, Notification
 from rooms.models import Room
 from .forms import UploadFileForm
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.utils.translation import ugettext_lazy as _
+
+from Rumqa.settings import NOTIF_FRIEND_ACCEPT,\
+    NOTIF_FRIEND_DELETE,\
+    NOTIF_FRIEND_DENY,\
+    NOTIF_FRIEND_REQUEST
 
 import datetime
 import json
@@ -127,7 +132,7 @@ def search_friends(request):
                 res = 0
 
                 search = list(reversed(sorted([x.upper()
-                                            for x in data_split], key=len)))
+                                               for x in data_split], key=len)))
                 data = list(reversed(sorted([friend.profile.first_name.upper(
                 ), friend.profile.last_name.upper(), friend.username.upper()])))
 
@@ -138,9 +143,11 @@ def search_friends(request):
                             data.remove(j)
                             break
                 if res:
-                    result_not_friends += [(res, FriendSerializer(friend).data)]
+                    result_not_friends += [(res,
+                                            FriendSerializer(friend).data)]
         else:
-            result_not_friends = [(0, FriendSerializer(i).data) for i in room.allowed_users.all()]
+            result_not_friends = [(0, FriendSerializer(i).data)
+                                  for i in room.allowed_users.all()]
 
         result = {
             'friends': [i[1] for i in reversed(sorted(result_not_friends, key=lambda x: x[0]))]
@@ -278,6 +285,14 @@ def update_friend_list(request, id):
                 friend.friends.remove(user.profile)
                 user.save()
                 friend.save()
+                content = {
+                    'title': f'Вас удалили из друзей',
+                    'content': f'Пользователь <Link to="/profile/{user.id}">{user.username}</Link> удалил вас из друзей',
+                    'n_type': NOTIF_FRIEND_DELETE,
+                    'friend': user.id,
+                    'user': friend
+                }
+                Notification(**content).save()
                 return Response(b'', status=status.HTTP_202_ACCEPTED)
             return Response(b'', status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -291,9 +306,29 @@ def update_friend_list(request, id):
                 user.friends.add(friend.profile)
                 user.save()
                 friend.save()
+                content = {
+                    'title': f'Запрос в друзья принят',
+                    'content': f'Пользователь <Link to="/profile/{user.id}">{user.username}</Link> принял ваш запрос в друзья',
+                    'n_type': NOTIF_FRIEND_ACCEPT,
+                    'friend': user.id,
+                    'user': friend
+                }
+                for u in Notification.objects.filter(n_type=NOTIF_FRIEND_REQUEST, user=user):
+                    u.delete()
+                Notification(**content).save()
             elif data['request'] == 'deny':
                 friend.outgoing_friend_requests.remove(user.profile)
                 friend.save()
+                content = {
+                    'title': f'Запрос в друзья отклонен',
+                    'content': f'Пользователь <Link to="/profile/{user.id}">{user.username}</Link> отклонил ваш запрос в друзья',
+                    'n_type': NOTIF_FRIEND_DENY,
+                    'friend': user.id,
+                    'user': friend
+                }
+                for u in Notification.objects.filter(n_type=NOTIF_FRIEND_REQUEST, user=user):
+                    u.delete()
+                Notification(**content).save()
             else:
                 return Response(b'', status=status.HTTP_400_BAD_REQUEST)
             return Response(b'', status=status.HTTP_202_ACCEPTED)
@@ -305,6 +340,14 @@ def update_friend_list(request, id):
         else:
             user.outgoing_friend_requests.add(friend.profile)
             user.save()
+            content = {
+                    'title': f'Новый запрос в друзья',
+                    'content': f'Пользователь <Link to="/profile/{user.id}">{user.username}</Link> отправил вам запрос в друзья',
+                    'n_type': NOTIF_FRIEND_REQUEST,
+                    'friend': user.id,
+                    'user': friend
+                }
+            Notification(**content).save()
             return Response(b'', status=status.HTTP_202_ACCEPTED)
 
 
@@ -340,3 +383,19 @@ def create_user(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def get_notifications(request):
+    if not request.user.is_authenticated:
+        return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
+    user = request.user
+
+    # Получение уведомлений
+    notifications = Notification.objects.filter(user=user).order_by('-pk')
+    for n in notifications[20:]:
+        n.delete()
+    serializer = NotificationSerializer(notifications, many=True)
+
+    # Ответ
+    return Response(serializer.data, status=status.HTTP_200_OK)

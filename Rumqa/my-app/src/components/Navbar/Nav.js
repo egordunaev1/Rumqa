@@ -71,6 +71,7 @@ class Navbar extends React.Component {
                 {
                 }
                 <UserPanel
+                    notifications={this.props.notifications}
                     user={this.props.user}
                     logged_in={this.props.logged_in}
                     handle_login={this.props.handle_login}

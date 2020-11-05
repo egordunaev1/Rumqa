@@ -5,6 +5,17 @@ from django.dispatch import receiver
 
 import datetime
 
+class Notification(models.Model):
+    user = models.ForeignKey('Profile', related_name='notifications', on_delete=models.CASCADE)
+    n_type = models.IntegerField()
+    title = models.CharField(max_length=50)
+    content = models.TextField()
+
+    # Связанные модели
+    chat = models.IntegerField(null=True)
+    question = models.IntegerField(null=True)
+    friend = models.IntegerField(null=True)
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True)

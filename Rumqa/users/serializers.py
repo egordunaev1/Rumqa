@@ -3,8 +3,16 @@ from rest_framework_jwt.settings import api_settings
 
 from django.contrib.auth.models import User
 
-from .models import Profile
+from .models import Profile, Notification
 
+
+# ----------------------- NotificationSerializer -------------------------- #
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = ('id', 'title', 'content')
 
 # -------------------------- FriendSerilizers ----------------------------- #
 

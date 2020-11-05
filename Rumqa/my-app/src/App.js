@@ -20,11 +20,14 @@ class App extends Component {
     this.state = {
       logged_in: false,
       user: null,
-      profile_active_tab: 1
+      profile_active_tab: 1,
+      notifications: []
     };
     this.updateUserData = this.updateUserData.bind(this);
     this.update_pat = this.update_pat.bind(this);
   }
+
+  timerId;
 
   update_pat(num) {
     this.setState({ profile_active_tab: num });
@@ -55,8 +58,26 @@ class App extends Component {
     }
   }
 
+  getNotifications() {
+    fetch(getBackend() + '/notifications/', {
+      headers: {
+        Authorization: `JWT ${getCookie('token')}`
+      }
+    })
+      .then(response => {
+        if (response.status === 200)
+          response.json().then(res => this.setState({ notifications: res }));
+      }
+      )
+  }
+
   componentDidMount() {
     this.updateUserData();
+    this.timerId = setInterval(() => { this.getNotifications(false); }, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
   }
 
   handle_login = (e, data) => {
@@ -88,7 +109,9 @@ class App extends Component {
             handle_login={this.handle_login}
             user={this.state.user}
             handle_logout={this.handle_logout}
-            update_pat={this.update_pat} />
+            update_pat={this.update_pat}
+            notifications={this.state.notifications}
+            />
           <Switch>
             <Route exact path="/registration" render={(props) => <Reg {...props} updateUser={this.updateUserData} handle_signup={this.handle_signup} logged_in={this.state.logged_in} />} />
             <Route path="/profile/:id?" render={(props) => <Profile {...props} user={this.state.user} updateUser={this.updateUserData} update_pat={this.update_pat} active_tab={this.state.profile_active_tab} />} />

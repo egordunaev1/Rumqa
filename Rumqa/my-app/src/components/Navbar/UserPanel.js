@@ -53,6 +53,7 @@ class UserPanel extends React.Component {
     if (this.props.logged_in)
       return (
         <div id="navbar-profile-panel" ref={this.wrapper}>
+          <div>Прива</div>
           <div onClick={this.handleProfileHidden} id="logged-in-nav-panel">
             <div className="my-auto" id="navbar-username">{this.props.user.username}</div>
             <img alt=""  className="my-auto cover-img"  src={getBackend() + this.props.user.profile.cover} height="32px" width="32px" />

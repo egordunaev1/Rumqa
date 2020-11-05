@@ -38,6 +38,7 @@ urlpatterns = [
     re_path(r'^choose_best/$', choose_best),
     re_path(r'^more_messages/$', more_messages),
     re_path(r'^my_rooms/$', my_rooms),
+    re_path(r'^notifications/$', get_notifications),
     re_path(r'^like/$', like),
     re_path(r'^token-auth/$', obtain_jwt_token),
     re_path(r'^current-user/$', current_user),
