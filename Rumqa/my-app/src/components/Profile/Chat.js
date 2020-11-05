@@ -77,7 +77,7 @@ class PrivateChat extends Component {
   }
 
   render() {
-    console.log(this.props.redirected);
+    console.log(this.state, 123);
     if (this.props.redirected)
       return (
         <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
