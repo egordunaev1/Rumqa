@@ -13,8 +13,8 @@ from pygments.styles import get_all_styles, get_style_by_name
 from pygments.lexers import Python3Lexer
 
 from Rumqa.settings import NOTIF_ROOM_CHAT_NEW_MESSAGE,\
-                           NOTIF_NEW_ANSWER,\
-                           NOTIF_BEST_ANSWER
+    NOTIF_NEW_ANSWER,\
+    NOTIF_BEST_ANSWER
 
 from .models import *
 from .serializers import *
@@ -352,6 +352,7 @@ def send_message(request):
     # Ответ
     return Response(resp, status=status.HTTP_200_OK)
 
+
 @api_view(['GET'])
 def get_private_chat(request, user_id):
     if not request.user.is_authenticated:
@@ -376,6 +377,7 @@ def get_private_chat(request, user_id):
     # Ответ
     return Response(chat.id, status=status.HTTP_200_OK)
 
+
 @api_view(['GET'])
 def get_interlocutor(request, chat_id):
     if not request.user.is_authenticated:
@@ -396,6 +398,8 @@ def get_interlocutor(request, chat_id):
     return Response(FriendSerializer(interlocutor).data, status=status.HTTP_200_OK)
 
 # Изменение статуса участника комнаты (админ, обычный)
+
+
 @api_view(['POST'])
 def change_status(request):
     if not request.user.is_authenticated:
@@ -458,6 +462,21 @@ def choose_best(request):
     question.save()
     answer.creator.profile.best_answers += 1
     answer.creator.profile.save()
+
+    # Добавление уведомления
+    content = {
+        'title': f'Ваш ответ выбран лучшим',
+        'content1': f'Ваш ответ на вопрос {question.title} в комнате ',
+        'link_to': question.question_page.room.path,
+        'link_text': question.question_page.room.name,
+        'content2': ' выбран лучшим',
+        'n_type': NOTIF_BEST_ANSWER,
+        'question': question.id,
+        'user': user
+    }
+    for u in Notification.objects.filter(user=user, question=question.id):
+        u.delete()
+    Notification(**content).save()
 
     return Response(b'', status=status.HTTP_200_OK)
 

@@ -332,7 +332,7 @@ def update_friend_list(request, id):
                 content = {
                     'title': f'Запрос в друзья отклонен',
                     'content1': f'Пользователь ',
-                    'link_to': f'/profile/{user.id}">',
+                    'link_to': f'/profile/{user.id}',
                     'link_text': user.username,
                     'content2': ' отклонил ваш запрос в друзья',
                     'n_type': NOTIF_FRIEND_DENY,
