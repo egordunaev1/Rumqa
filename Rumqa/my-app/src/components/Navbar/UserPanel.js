@@ -87,7 +87,7 @@ class UserPanel extends React.Component {
             <div className={this.state.hidden_notif ? 'hidden' : ''} id="nav-notif">
               {
                 this.props.notifications.map((notif, ind) => (
-                  <div className={'px-2' + (ind !== 0 ? 'pt-1': '')} key={ind+'a'}>
+                  <div className={'px-2' + (ind !== 0 ? ' pt-1': '')} key={ind+'a'}>
                     <div className="text-bold" key={ind+'b'}>{notif.title}</div>
                     <div className="nav-profile-sep mx-auto" key={ind+'c'}/>
                     {notif.content1}

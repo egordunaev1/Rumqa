@@ -296,6 +296,10 @@ def update_friend_list(request, id):
                     'user': friend
                 }
                 Notification(**content).save()
+                for u in Notification.objects.filter(user=user, friend=friend.id):
+                    u.delete()
+                for u in Notification.objects.filter(user=friend, friend=user.id):
+                    u.delete()
                 return Response(b'', status=status.HTTP_202_ACCEPTED)
             return Response(b'', status=status.HTTP_400_BAD_REQUEST)
         else:

@@ -9,8 +9,8 @@ from Rumqa.settings import NOTIF_PRIVATE_CHAT_NEW_MESSAGE,\
 from users.models import Notification
 
 
-def delete_same_notifs(user, content):
-    for n in user.notifications.all():
+def delete_same_notifs(user, filtr):
+    for n in user.notifications.filter(**filtr):
         n.delete()
 
 #<------------------------------ Base Models ------------------------------>#
@@ -82,19 +82,19 @@ def create_chatmessage(sender, instance, created, **kwargs):
         if not room:
             content['n_type'] = NOTIF_PRIVATE_CHAT_NEW_MESSAGE
             if chat.first_user.id != instance.sender.id:
-                delete_same_notifs(chat.first_user, content['chat'])
+                delete_same_notifs(chat.first_user, {'chat': chat.id}})
                 Notification(user=chat.first_user, **content).save()
             else:
-                delete_same_notifs(chat.second_user, content['chat'])
+                delete_same_notifs(chat.second_user, {'chat': chat.id})
                 Notification(user=chat.second_user, **content).save()
         else:
             for user in room.admin_list.all():
                 if user.id != instance.sender.id:
-                    delete_same_notifs(user, content['chat'])
+                    delete_same_notifs(user, {'chat': chat.id})
                     Notification(user=user, **content).save()
             for user in room.allowed_users.all():
                 if user.id != instance.sender.id:
-                    delete_same_notifs(user, content['chat'])
+                    delete_same_notifs(user, {'chat': chat.id})
                     Notification(user=user, **content).save()
 
 
@@ -135,7 +135,7 @@ def create_answer(sender, instance, created, **kwargs):
             'question': question.id,
             'user': user
         }
-        delete_same_notifs(user, content['question'])
+        delete_same_notifs(user, {'question': question.id})
         Notification(**content).save()
 
 
