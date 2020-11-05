@@ -287,7 +287,10 @@ def update_friend_list(request, id):
                 friend.save()
                 content = {
                     'title': f'Вас удалили из друзей',
-                    'content': f'Пользователь <Link to="/profile/{user.id}">{user.username}</Link> удалил вас из друзей',
+                    'link_to': f'/profile/{user.id}',
+                    'content1': 'Пользователь ',
+                    'link_text': user.username,
+                    'content2': ' удалил вас из друзей',
                     'n_type': NOTIF_FRIEND_DELETE,
                     'friend': user.id,
                     'user': friend
@@ -308,7 +311,10 @@ def update_friend_list(request, id):
                 friend.save()
                 content = {
                     'title': f'Запрос в друзья принят',
-                    'content': f'Пользователь <Link to="/profile/{user.id}">{user.username}</Link> принял ваш запрос в друзья',
+                    'content1': f'Пользователь ',
+                    'link_to': f'/profile/{user.id}',
+                    'link_text': user.username,
+                    'content2': ' принял ваш запрос в друзья',
                     'n_type': NOTIF_FRIEND_ACCEPT,
                     'friend': user.id,
                     'user': friend
@@ -321,7 +327,10 @@ def update_friend_list(request, id):
                 friend.save()
                 content = {
                     'title': f'Запрос в друзья отклонен',
-                    'content': f'Пользователь <Link to="/profile/{user.id}">{user.username}</Link> отклонил ваш запрос в друзья',
+                    'content1': f'Пользователь ',
+                    'link_to': f'/profile/{user.id}">',
+                    'link_text': user.username,
+                    'content2': ' отклонил ваш запрос в друзья',
                     'n_type': NOTIF_FRIEND_DENY,
                     'friend': user.id,
                     'user': friend
@@ -342,7 +351,10 @@ def update_friend_list(request, id):
             user.save()
             content = {
                     'title': f'Новый запрос в друзья',
-                    'content': f'Пользователь <Link to="/profile/{user.id}">{user.username}</Link> отправил вам запрос в друзья',
+                    'content1': 'Пользователь ',
+                    'link_text': user.username,
+                    'link_to': f'/profile/{user.id}',
+                    'content2': ' отправил вам запрос в друзья',
                     'n_type': NOTIF_FRIEND_REQUEST,
                     'friend': user.id,
                     'user': friend

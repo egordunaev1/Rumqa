@@ -4,7 +4,7 @@ import {
   Link
 } from "react-router-dom";
 import { getBackend } from '../../utility';
-import Interweave, {Markup} from 'interweave';
+import Interweave from 'interweave';
 
 class UserPanel extends React.Component {
   constructor(props) {
@@ -77,6 +77,29 @@ class UserPanel extends React.Component {
   }
 
   render() {
+    const matcher = {
+      inverseName: 'noFoo',
+      propName: 'foo',
+      match(string) {
+        const result = string.match(/foo/);
+        if (!result) {
+          return null;
+        }
+        return {
+          index: result.index!,
+          length: result[0].length,
+          match: result[0],
+          extraProp: 'foo', // or result[1], etc
+          valid: true,
+        };
+      },
+      createElement(children, props) {
+        return <span {...props}>{children}</span>;
+      },
+      asTag() {
+        return 'span';
+      },
+    };
     console.log(this.props.notifications);
     if (this.props.logged_in)
       return (
@@ -93,7 +116,12 @@ class UserPanel extends React.Component {
                   <div>
                     <div className="nav-profile-item">{notif.title}</div>
                     <div className="nav-profile-sep mx-auto" />
-                    <Interweave disableFilters content={notif.content}/>
+                    {notif.content1}
+                    <Link to={notif.link_to}>
+                      {notif.link_text}
+                    </Link>
+                    {notif.content2}
+                    <div className="nav-profile-sep mx-auto" />
                   </div>
                 ))
               }

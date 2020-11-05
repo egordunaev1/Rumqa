@@ -68,7 +68,10 @@ def create_chatmessage(sender, instance, created, **kwargs):
         room = chat.room
         content = {
             'title': f'Новое сообщение',
-            'content': f'В комнате <Link to="/{room.path}">{room.name}</Link> есть новые сообщения',
+            'content1': f'В комнате ',
+            'link_to': room.path,
+            'link_text': room.name,
+            'content2': ' есть новые сообщения',
             'n_type': NOTIF_ROOM_CHAT_NEW_MESSAGE,
             'chat': chat.id
         }
@@ -111,7 +114,10 @@ def create_answer(sender, instance, created, **kwargs):
         user = question.creator
         content = {
             'title': f'Новый ответ на вопрос',
-            'content': f'На ваш вопрос {question.title} в комнате <Link to="/{room.path}">{room.name}</Link> есть новые сообщения',
+            'content1': f'На ваш вопрос {question.title} в комнате ',
+            'link_to': f"/{room.path}",
+            'link_text': room.name,
+            'content2': ' есть новые сообщения',
             'n_type': NOTIF_NEW_ANSWER,
             'question': question.id,
             'user': user

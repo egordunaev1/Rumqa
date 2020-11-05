@@ -12,7 +12,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ('id', 'title', 'content')
+        fields = ('id', 'title', 'content1', 'link_to', 'link_text', 'content2')
 
 # -------------------------- FriendSerilizers ----------------------------- #
 
