@@ -4,6 +4,7 @@ import { getCookie } from '../../cookieOperations';
 import Scrollbar from 'react-scrollbars-custom';
 import CreateMessage from './CreateMessage';
 import { getBackend } from '../../utility';
+import { Link } from 'react-router-dom';
 
 function TopPanel(props) {
   var interlocutor = props.interlocutor;
