@@ -82,7 +82,7 @@ def create_chatmessage(sender, instance, created, **kwargs):
         if not room:
             content['n_type'] = NOTIF_PRIVATE_CHAT_NEW_MESSAGE
             if chat.first_user.id != instance.sender.id:
-                delete_same_notifs(chat.first_user.id, content['chat'])
+                delete_same_notifs(chat.first_user, content['chat'])
                 Notification(user=chat.first_user, **content).save()
             else:
                 delete_same_notifs(chat.second_user, content['chat'])
