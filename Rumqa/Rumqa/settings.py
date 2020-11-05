@@ -38,6 +38,7 @@ NOTIFY_USERS_ON_ENTER_OR_LEAVE_ROOMS = getattr(settings, 'NOTIFY_USERS_ON_ENTER_
 NOTIF_ROOM_CHAT_NEW_MESSAGE = 0  # Новое сообщение в чате комнаты
 NOTIF_PRIVATE_CHAT_NEW_MESSAGE = 1  # Новое сообщение в лс
 NOTIF_NEW_ANSWER = 2 # Новый ответ на вопрос
+NOTIF_BEST_ANSWER = 7
 NOTIF_FRIEND_REQUEST = 3 # Новый запрос в друзья
 NOTIF_FRIEND_ACCEPT = 4 # Принят запрос в друзья
 NOTIF_FRIEND_DENY = 5 # Отклонен запрос в друзья

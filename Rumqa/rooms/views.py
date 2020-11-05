@@ -13,8 +13,8 @@ from pygments.styles import get_all_styles, get_style_by_name
 from pygments.lexers import Python3Lexer
 
 from Rumqa.settings import NOTIF_ROOM_CHAT_NEW_MESSAGE,\
-    NOTIF_NEW_ANSWER,\
-    NOTIF_BEST_ANSWER
+                            NOTIF_NEW_ANSWER,\
+                            NOTIF_BEST_ANSWER
 
 from .models import *
 from .serializers import *
