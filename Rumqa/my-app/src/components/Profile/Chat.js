@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { getCookie } from '../../cookieOperations';
 import { getBackend } from '../../utility';
 import Chat from '../Main/Chat';
@@ -50,7 +51,7 @@ class PrivateChat extends Component {
   render() {
     return (
       <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
-        <Chat user={this.props.user} chat={this.state.chat_id} setError={this.setError} interlocutor={this.state.interlocutor} />
+        <Redirect to={"/chat/" + this.state.chat_id}/>
       </Wrapper>
     )
   }
