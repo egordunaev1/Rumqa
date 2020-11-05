@@ -43,6 +43,8 @@ class PrivateChat extends Component {
   }
 
   render() {
+    if (!this.state.is_loading)
+      console.log(typeof(this.state.chat_id));
     return (
       <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
         <Chat user={this.props.user} chat={this.state.chat_id} setError={this.setError} />
