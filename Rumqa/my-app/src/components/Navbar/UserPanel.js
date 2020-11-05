@@ -18,11 +18,11 @@ class UserPanel extends React.Component {
   }
 
   addOutsideClickListener = which => {
-    document.addEventListener('click', (e) => this.handleDocumentClick(e, which));
+    document.addEventListener('click', (which === 1 ? this.handleDocumentClick1 : this.handleDocumentClick2));
   }
 
   removeOutsideClickListener = which => {
-    document.removeEventListener('click', (e) => this.handleDocumentClick(e, which));
+    document.removeEventListener('click', (which === 1 ? this.handleDocumentClick1 : this.handleDocumentClick2));
   }
 
   onShow = which => {
@@ -40,11 +40,19 @@ class UserPanel extends React.Component {
       this.setState({ hidden_notif: true });
   }
 
-  handleDocumentClick = (e, which) => {
-    let _w = (which === 1 ? this.wrapper : this.wrapper_notif);
+  handleDocumentClick1 = (e) => {
+    let _w = this.wrapper;
     if (_w.current && !_w.current.contains(e.target)) {
-      this.onClickOutside(which);
-      console.log(which);
+      this.onClickOutside(1);
+      console.log(1);
+    }
+  };
+
+  handleDocumentClick2 = (e) => {
+    let _w = this.wrapper_notif;
+    if (_w.current && !_w.current.contains(e.target)) {
+      this.onClickOutside(2);
+      console.log(2);
     }
   };
 
