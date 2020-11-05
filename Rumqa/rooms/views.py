@@ -12,6 +12,8 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles, get_style_by_name
 from pygments.lexers import Python3Lexer
 
+from Rumqa.settings import NOTIF_ROOM_CHAT_NEW_MESSAGE
+
 from .models import *
 from .serializers import *
 import re
@@ -497,6 +499,8 @@ def more_messages(request):
     ind = 0
     fnd = False
     messages = ChatMessage.objects.filter(chat=chat).order_by('-pk')[:1000]
+    for n in Notification.objects.filter(user=user, n_type=NOTIF_ROOM_CHAT_NEW_MESSAGE):
+        n.delete()
     if last_message == -1:
         if last:
             messages = messages[:15]
