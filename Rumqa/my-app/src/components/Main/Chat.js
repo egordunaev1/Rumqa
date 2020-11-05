@@ -6,8 +6,10 @@ import CreateMessage from './CreateMessage';
 import { getBackend } from '../../utility';
 
 function TopPanel(props) {
+  var interlocutor = props.interlocutor;
   return (
     <div className="container-fluid bg-primary p-1 border-rounded-top chat-top-panel">
+      <div className="text-white">{interlocutor.profile.first_name + ' ' + interlocutor.profile.second_name}</div>
     </div>
   )
 }
@@ -152,7 +154,7 @@ class Chat extends Component {
     var strh = 'calc(' + this.state.nm_height + 'px' + ' + .5rem)';
     return (
       <div className="body main-body bg-white">
-        <TopPanel />
+        <TopPanel interlocutor={this.props.interlocutor} />
         <div className="chat d-flex flex-column" style={{ height: (this.state.height - 181 - 50) + 'px' }}>
           <Scrollbar
             onLoad={() => { var s = this.scrollbar.current; s.scrollTop = s.scrollHeight - this.scrollbot; }}

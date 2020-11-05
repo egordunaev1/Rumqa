@@ -9,6 +9,7 @@ class PrivateChat extends Component {
     super(props);
     this.state = {
       chat_id: null,
+      interlocutor: null,
       is_loading: true,
       error: null
     }
@@ -33,7 +34,11 @@ class PrivateChat extends Component {
       }
     }).then(res => {
       if (res.status === 200) 
-        res.json().then((json) => this.setState({ chat_id: json, is_loading: false }));
+        res.json().then((json) => this.setState({ 
+          chat_id: json.chat_id,
+          interlocutor: json.interlocutor,
+          is_loading: false
+        }));
       else this.setError(res.status);
     })
   }
@@ -45,7 +50,7 @@ class PrivateChat extends Component {
   render() {
     return (
       <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
-        <Chat user={this.props.user} chat={this.state.chat_id} setError={this.setError} />
+        <Chat user={this.props.user} chat={this.state.chat_id} setError={this.setError} interlocutor={this.state.interlocutor} />
       </Wrapper>
     )
   }

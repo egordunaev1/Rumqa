@@ -465,7 +465,7 @@ textarea {
 }
 
 .chat-top-panel {
-    height: 16px;
+    min-height: 16px;
 }
 
 .new-message {
