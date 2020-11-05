@@ -49,7 +49,6 @@ class Chat extends Component {
 
 
   componentDidMount() {
-    console.log(this.props);
     this.getMessages();
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);

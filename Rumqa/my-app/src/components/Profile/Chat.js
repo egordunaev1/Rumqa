@@ -30,7 +30,6 @@ class PrivateChat extends Component {
     if (!this.state.chat_id)
       try {
         chat_id = Number.parseInt(this.props.match.params.chat_id);
-        console.log(this.props);
       } catch (err) {
         this.setState({ error: 404 });
         return;
@@ -44,7 +43,6 @@ class PrivateChat extends Component {
     }).then(res => {
       if (res.status === 200) {
         res.json().then(res => {
-          console.log(res);
           this.setState({ interlocutor: res, is_loading: false, chat_id: chat_id});
         });
       } else {
@@ -83,11 +81,10 @@ class PrivateChat extends Component {
 
   componentDidUpdate() {
     if (!this.state.error && !this.state.interlocutor && this.state.redirected)
-      this.getInterlocutor(); 
+      this.getInterlocutor();
   }
 
   render() {
-    console.log(this.state);
     if (this.props.redirected)
       return (
         <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
