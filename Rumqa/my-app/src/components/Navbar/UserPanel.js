@@ -9,7 +9,6 @@ class UserPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hidden: true, hidden_notif: true }
-    this.handleProfileHidden = this.handleProfileHidden.bind(this);
   }
   wrapper = React.createRef();
   wrapper_notif = React.createRef();
@@ -18,23 +17,23 @@ class UserPanel extends React.Component {
     this.removeOutsideClickListener();
   }
 
-  addOutsideClickListener(which) {
+  addOutsideClickListener = which => {
     document.addEventListener('click', (e) => this.handleDocumentClick(e, which));
   }
 
-  removeOutsideClickListener(which) {
+  removeOutsideClickListener = which => {
     document.removeEventListener('click', (e) => this.handleDocumentClick(e, which));
   }
 
-  onShow(which) {
+  onShow = which => {
     this.addOutsideClickListener(which);
   }
 
-  onHide(which) {
+  onHide = which => {
     this.removeOutsideClickListener(which);
   }
 
-  onClickOutside(which) {
+  onClickOutside = which => {
     if (which === 1)
       this.setState({ hidden: true });
     else
@@ -49,13 +48,13 @@ class UserPanel extends React.Component {
     }
   };
 
-  handleProfileHidden() {
+  handleProfileHidden = () => {
     let hidden = this.state.hidden;
     !hidden ? this.onHide(1) : this.onShow(1);
     this.setState({ hidden: !hidden });
   }
 
-  handleNotifHidden() {
+  handleNotifHidden = () => {
     let hidden = this.state.hidden_notif;
     !hidden ? this.onHide(2) : this.onShow(2);
     this.setState({ hidden_notif: !hidden });
