@@ -166,7 +166,7 @@ class Chat extends Component {
               this.scrollbot = s.scrollHeight - s.scrollTop;
             }}
             elementRef={(instance) => (instance && (this.scrollbar.current = instance.firstChild.firstChild))}
-            style={{ height: this.state.height - 181 - 50 - this.state.nm_height }}>
+            style={{ height: this.state.height - 50 - this.state.nm_height }}>
             <BrowseMessages user={this.props.user} messages={this.state.messages} />
           </Scrollbar>
           <Scrollbar style={{ height: strh, width: '100%', borderTop: '2px solid #cdd1d5' }}>
