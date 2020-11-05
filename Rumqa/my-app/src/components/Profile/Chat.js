@@ -26,7 +26,7 @@ class PrivateChat extends Component {
       this.setState({ error: 404 });
       return;
     }
-    fetch(getBackend() + '/get_private_chat/' + interlocutor, {
+    fetch(getBackend() + '/private_chat/' + interlocutor, {
       method: 'GET',
       headers: {
         Authorization: `JWT ${getCookie('token')}`
