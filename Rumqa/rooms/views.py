@@ -377,6 +377,7 @@ def get_private_chat(request, user_id):
     # Ответ
     return Response(chat.id, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
 def get_interlocutor(request, chat_id):
     if not request.user.is_authenticated:
         return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
