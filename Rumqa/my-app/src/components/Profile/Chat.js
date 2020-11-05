@@ -44,7 +44,7 @@ class PrivateChat extends Component {
       if (res.status === 200) {
         res.json().then(res => {
           console.log(res);
-          this.setState({ interlocutor: res, is_loading: false, chat_id: chat_id, redirected: true});
+          this.setState({ interlocutor: res, chat_id: chat_id, redirected: true});
         });
       } else {
         this.setError(res.status);
@@ -89,7 +89,7 @@ class PrivateChat extends Component {
         </Wrapper>
       )
     else {
-      if (!this.state.is_loading && !this.state.error)
+      if (this.state.chat_id)
         return <Redirect to={'/chat/' + this.state.chat_id} />;
       return <Wrapper is_loading={this.state.is_loading} error={this.state.error}></Wrapper>
     }
