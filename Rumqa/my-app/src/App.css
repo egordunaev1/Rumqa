@@ -204,6 +204,17 @@ a {
     z-index: 100;
 }
 
+#nav-notif {
+    padding: 3px 0;
+    position: absolute;
+    right: 20px;
+    top: 65px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    z-index: 100;
+}
+
 .nav-profile-sep {
     height: 1px;
     background-color: #dde;
