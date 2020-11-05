@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { getCookie } from '../../cookieOperations';
 import { getBackend } from '../../utility';
 import Chat from '../Main/Chat';
@@ -15,7 +15,7 @@ class PrivateChat extends Component {
   }
 
   componentDidMount() {
-
+    this.get_personal_chat();
   }
 
   get_personal_chat = () => {
