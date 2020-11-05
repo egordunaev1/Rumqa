@@ -12,7 +12,8 @@ class PrivateChat extends Component {
       chat_id: null,
       interlocutor: null,
       is_loading: true,
-      error: null
+      error: null,
+      redirected: this.props.redirected
     }
   }
 
@@ -26,12 +27,14 @@ class PrivateChat extends Component {
 
   getInterlocutor = () => {
     var chat_id;
-    try {
-      chat_id = Number.parseInt(this.props.match.params.chat_id);
-    } catch (err) {
-      this.setState({ error: 404 });
-      return;
-    }
+    if (!this.state.chat_id)
+      try {
+        chat_id = Number.parseInt(this.props.match.params.chat_id);
+      } catch (err) {
+        this.setState({ error: 404 });
+        return;
+      }
+    else chat_id = this.state.chat_id;
     fetch(getBackend() + '/interlocutor/' + chat_id, {
       method: 'GET',
       headers: {
@@ -41,7 +44,7 @@ class PrivateChat extends Component {
       if (res.status === 200) {
         res.json().then(res => {
           console.log(res);
-          this.setState({ interlocutor: res, is_loading: false, chat_id: chat_id });
+          this.setState({ interlocutor: res, is_loading: false, chat_id: chat_id, redirected: true});
         });
       } else {
         this.setError(res.status);
@@ -87,7 +90,7 @@ class PrivateChat extends Component {
       )
     else {
       if (!this.state.is_loading && !this.state.error)
-        return <Redirect to={'/chat/' + this.props.chat_id} />;
+        return <Redirect to={'/chat/' + this.c.chat_id} />;
       return <Wrapper is_loading={this.state.is_loading} error={this.state.error}></Wrapper>
     }
   }
