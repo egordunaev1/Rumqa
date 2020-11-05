@@ -80,8 +80,12 @@ class PrivateChat extends Component {
     this.setState({ error: err_code });
   }
 
+  componentDidUpdate() {
+    if (this.state.is_loading)
+      this.getInterlocutor();
+  }
+
   render() {
-    console.log(this.state, 123);
     if (this.props.redirected)
       return (
         <Wrapper is_loading={this.state.is_loading} error={this.state.error}>
