@@ -52,7 +52,6 @@ class UserPanel extends React.Component {
     let _w = this.wrapper;
     if (_w.current && !_w.current.contains(e.target)) {
       this.onClickOutside(1);
-      console.log(1);
     }
   };
 
@@ -60,7 +59,6 @@ class UserPanel extends React.Component {
     let _w = this.wrapper_notif;
     if (_w.current && !_w.current.contains(e.target)) {
       this.onClickOutside(2);
-      console.log(2);
     }
   };
 
@@ -77,7 +75,6 @@ class UserPanel extends React.Component {
   }
 
   render() {
-    console.log(this.props.notifications);
     if (this.props.logged_in)
       return (
         <div id="navbar-profile-panel" className="d-flex">
