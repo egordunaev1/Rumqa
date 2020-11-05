@@ -30,7 +30,7 @@ class PrivateChat extends Component {
     if (!this.state.chat_id)
       try {
         chat_id = Number.parseInt(this.props.match.params.chat_id);
-        console.log(12312321);
+        console.log(this.props);
       } catch (err) {
         this.setState({ error: 404 });
         return;
