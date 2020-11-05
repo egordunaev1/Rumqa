@@ -18,7 +18,7 @@ class PrivateChat extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props, 234);
+    console.log(state, 234);
     if (this.props.redirected)
       this.getInterlocutor();
     else
