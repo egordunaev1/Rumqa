@@ -382,6 +382,7 @@ def get_interlocutor(request, chat_id):
         return Response(b'', status=status.HTTP_401_UNAUTHORIZED)
 
     # Получение данных из запроса
+    print(0)
     try:
         user = request.user
         chat = Chat.objects.get(pk=chat_id)
