@@ -156,7 +156,7 @@ class Chat extends Component {
     return (
       <div className="body main-body bg-white">
         <TopPanel interlocutor={this.props.interlocutor} />
-        <div className="chat d-flex flex-column" style={{ height: (this.state.height - 181 - 50) + 'px' }}>
+        <div className="chat d-flex flex-column" style={{ height: (this.state.height - 50) + 'px' }}>
           <Scrollbar
             onLoad={() => { var s = this.scrollbar.current; s.scrollTop = s.scrollHeight - this.scrollbot; }}
             onScrollStop={(s) => {
